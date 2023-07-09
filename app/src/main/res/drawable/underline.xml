@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:bottom="2dp" android:left="-6dp" android:right="-6dp" android:top="-6dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="3dp"
+                android:color="#CA86F3" /> <!-- Change the color to light purple as desired -->
+        </shape>
+    </item>
+</layer-list>
