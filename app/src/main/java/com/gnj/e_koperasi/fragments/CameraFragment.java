@@ -22,11 +22,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.gnj.e_koperasi.ImageClassifierHelper;
 import com.gnj.e_koperasi.R;
 import com.gnj.e_koperasi.databinding.FragmentCameraBinding;
-import com.google.common.util.concurrent.ListenableFuture;
-
 import org.tensorflow.lite.task.vision.classifier.Classifications;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class CameraFragment extends Fragment implements ImageClassifierHelper.Cl
     private FragmentCameraBinding fragmentCameraBinding;
     private ImageClassifierHelper imageClassifierHelper;
     private Bitmap bitmapBuffer;
-    private ClassificationResultAdapter classificationResultsAdapter;
+    private com.gnj.e_koperasi.fragments.ClassificationResultAdapter classificationResultsAdapter;
     private ImageAnalysis imageAnalyzer;
     private ProcessCameraProvider cameraProvider;
     private final Object task = new Object();
@@ -93,7 +93,7 @@ public class CameraFragment extends Fragment implements ImageClassifierHelper.Cl
         imageClassifierHelper = ImageClassifierHelper.create(requireContext(), this);
 
         // setup result adapter
-        classificationResultsAdapter = new ClassificationResultAdapter();
+        classificationResultsAdapter = new com.gnj.e_koperasi.fragments.ClassificationResultAdapter();
         classificationResultsAdapter.updateAdapterSize(imageClassifierHelper.getMaxResults());
         fragmentCameraBinding.recyclerviewResults.setAdapter(classificationResultsAdapter);
         fragmentCameraBinding.recyclerviewResults.setLayoutManager(new LinearLayoutManager(requireContext()));

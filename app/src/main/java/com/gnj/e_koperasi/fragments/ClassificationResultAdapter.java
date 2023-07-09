@@ -1,7 +1,6 @@
 package com.gnj.e_koperasi.fragments;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,14 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gnj.e_koperasi.databinding.ItemClassificationResultBinding;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
+import com.google.firebase.database.ValueEventListener;
+import com.gnj.e_koperasi.databinding.ItemClassificationResultBinding;
 import org.tensorflow.lite.support.label.Category;
 
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ import java.util.List;
 import java.util.Locale;
 
 /** Adapter for displaying the list of classifications for the image */
-public class ClassificationResultAdapter extends RecyclerView.Adapter<ClassificationResultAdapter.ViewHolder> {
+public class ClassificationResultAdapter
+        extends RecyclerView.Adapter<ClassificationResultAdapter.ViewHolder> {
     private static final String NO_VALUE = "--";
     private List<Category> categories = new ArrayList<>();
     private int adapterSize = 0;
@@ -75,9 +77,7 @@ public class ClassificationResultAdapter extends RecyclerView.Adapter<Classifica
         private final TextView tvLabel;
         private final TextView tvScore;
 
-        private FirebaseDatabase database = FirebaseDatabase.getInstance();
-        private DatabaseReference itemsRef = database.getReference("item");
-
+        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference("item");
         public ViewHolder(@NonNull ItemClassificationResultBinding binding) {
             super(binding.getRoot());
             tvLabel = binding.tvLabel;
@@ -87,27 +87,28 @@ public class ClassificationResultAdapter extends RecyclerView.Adapter<Classifica
         public void bind(Category category) {
             if (category != null) {
                 Query query = itemsRef.orderByChild("item_name").equalTo(category.getLabel());
-                query.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DataSnapshot dataSnapshot = task.getResult();
-                            if (dataSnapshot.exists()) {
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    String item_name = childSnapshot.child("item_name").getValue(String.class);
-                                    String item_price = childSnapshot.child("item_price").getValue(String.class);
-                                    if (item_name != null && item_name.equals(category.getLabel())) {
-                                        tvLabel.setText(item_name + " (" + item_price + ")");
-                                        tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
-                                        Log.d("Item",item_name);
-                                        break;
-                                    }
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                String item_name = childSnapshot.child("item_name").getValue(String.class);
+                                String item_price = childSnapshot.child("item_price").getValue(String.class);
+                                if (item_name != null && item_name.equals(category.getLabel())) {
+                                    tvLabel.setText(item_name + " (" + item_price + ")");
+                                    tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
+                                    break;
                                 }
-                            } else {
-                                tvLabel.setText(category.getLabel());
-                                tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
                             }
+                        } else {
+                            tvLabel.setText(category.getLabel());
+                            tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
                         }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle the error if needed
                     }
                 });
             } else {

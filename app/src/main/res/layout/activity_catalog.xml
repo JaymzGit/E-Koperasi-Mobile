@@ -9,6 +9,27 @@
 
     <!--Catelog-->
 
+    <TextView
+        android:id="@+id/tvInstruction3"
+        android:layout_width="410dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/view5"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center|center_horizontal"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/thasadith"
+        android:text="INVENTORY"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/view5"
         android:layout_width="wrap_content"
@@ -36,31 +57,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logopsp" />
-
-    <TextView
-        android:id="@+id/tvInstruction3"
-        android:layout_width="411dp"
-        android:layout_height="29dp"
-        android:layout_alignBottom="@id/view5"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="79dp"
-        android:fontFamily="@font/thasadith"
-        android:text="INVENTORY"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
