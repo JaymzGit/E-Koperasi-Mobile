@@ -11,19 +11,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserProfile extends AppCompatActivity {
     Button update;
     EditText etName, etID, etPhone, etEmail, et60;
-    String name,id,phone,email,customer_id,cus_name,cus_phone,cus_email;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String name, id, phone, email, customer_id, cus_name, cus_phone, cus_email;
+    DatabaseReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,33 +41,36 @@ public class UserProfile extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
 
-        Query query = db.collection("user").whereEqualTo("customer_id", id);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                                for (DocumentSnapshot document : queryDocumentSnapshots) {
-                                    customer_id = document.get("customer_id").toString().toUpperCase();
-                                    cus_name = document.get("name").toString();
-                                    cus_phone = document.get("phone").toString();
-                                    cus_email = document.get("email").toString();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        usersRef = database.getReference("user");
 
-                                    etName.setText(cus_name);
-                                    etID.setText(id.toUpperCase());
-                                    etPhone.setText(cus_phone.substring(3));
-                                    etEmail.setText(cus_email);
-                                }
-                            }
-                        }
-                    });
+        Query query = usersRef.orderByChild("customer_id").equalTo(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        customer_id = childSnapshot.child("customer_id").getValue(String.class);
+                        cus_name = childSnapshot.child("name").getValue(String.class);
+                        cus_phone = childSnapshot.child("phone").getValue(String.class);
+                        cus_email = childSnapshot.child("email").getValue(String.class);
+
+                        etName.setText(cus_name);
+                        etID.setText(id.toUpperCase());
+                        etPhone.setText(cus_phone.substring(3));
+                        etEmail.setText(cus_email);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "User data not found", Toast.LENGTH_SHORT).show();
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Failed to retrieve user data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
+
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,27 +79,28 @@ public class UserProfile extends AppCompatActivity {
                 id = etID.getText().toString();
                 email = etEmail.getText().toString();
                 phone = etPhone.getText().toString();
-                if(name.isEmpty() && id.isEmpty()&&phone.isEmpty()&&email.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Please Fill All the required Fill",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    phone="+60"+phone;
-                    Query query = db.collection("user").whereEqualTo("customer_id", id);
-                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                if (name.isEmpty() && id.isEmpty() && phone.isEmpty() && email.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please Fill All the required Fill", Toast.LENGTH_SHORT).show();
+                } else {
+                    phone = "+60" + phone;
+                    Query query = usersRef.orderByChild("customer_id").equalTo(id);
+                    query.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
                             if (task.isSuccessful()) {
-                                QuerySnapshot querySnapshot = task.getResult();
-                                if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                                    DocumentReference userRef = querySnapshot.getDocuments().get(0).getReference();
-                                    userRef.update("name", name,"phone",phone,"email",email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                DataSnapshot dataSnapshot = task.getResult();
+                                if (dataSnapshot.exists()) {
+                                    DatabaseReference userRef = dataSnapshot.getChildren().iterator().next().getRef();
+                                    userRef.child("name").setValue(name);
+                                    userRef.child("phone").setValue(phone);
+                                    userRef.child("email").setValue(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(getApplicationContext(), "Your account was updated", Toast.LENGTH_SHORT).show();
-                                                Intent Setting = new Intent(getApplicationContext(),Setting.class);
-                                                Bundle b=new Bundle();
-                                                b.putString("id",id);
+                                                Intent Setting = new Intent(getApplicationContext(), Setting.class);
+                                                Bundle b = new Bundle();
+                                                b.putString("id", id);
                                                 Setting.putExtras(b);
                                                 startActivity(Setting);
                                             } else {
