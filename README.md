@@ -1,1 +1,0 @@
-# E-Koperasi-Mobile
