@@ -27,7 +27,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class PasswordChange extends AppCompatActivity {
     Button btnSend;
     EditText Id, newpass, cnpass;
-    String id, NewPass, CnPass, frompage, startid, lastid, phone;
+    String id, NewPass, CnPass, frompage, phone;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("user");
