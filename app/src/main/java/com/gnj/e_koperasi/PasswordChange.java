@@ -27,7 +27,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class PasswordChange extends AppCompatActivity {
     Button btnSend;
     EditText Id, newpass, cnpass;
-    String id, NewPass, CnPass, frompage, phone;
+    String id, NewPass, CnPass, frompage, startid, lastid, phone;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("user");
@@ -85,7 +85,7 @@ public class PasswordChange extends AppCompatActivity {
                 CnPass = cnpass.getText().toString();
 
                 if (isValid()) {
-                    if (frompage.equals("OTP")) {
+                    if (!frompage.equals("Login")) {
                         // Query by Mobile Number
                         Query query = userRef.orderByChild("phone").equalTo(phone);
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
