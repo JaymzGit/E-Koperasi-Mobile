@@ -69,31 +69,38 @@ public class Setting extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.catelog:
                         Intent MainPage = new Intent(getApplicationContext(), Catalog.class);
-                        Bundle b = new Bundle();
-                        b.putString("id", id);
-                        MainPage.putExtras(b);
+                        Bundle main = new Bundle();
+                        main.putString("id",id);
+                        MainPage.putExtras(main);
                         startActivity(MainPage);
                         return true;
+                    case R.id.announcements:
+                        Intent Announcements = new Intent(getApplicationContext(), Announcements.class);
+                        Bundle announce = new Bundle();
+                        announce.putString("id",id);
+                        Announcements.putExtras(announce);
+                        startActivity(Announcements);
+                        return true;
                     case R.id.scan:
-                        Intent CamScan = new Intent(getApplicationContext(), ScanItems.class);
-                        Bundle c = new Bundle();
-                        c.putString("id", id);
-                        CamScan.putExtras(c);
-                        startActivity(CamScan);
+                        Intent ScanItems = new Intent(getApplicationContext(), ScanItems.class);
+                        Bundle scan = new Bundle();
+                        scan.putString("id",id);
+                        ScanItems.putExtras(scan);
+                        startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent cart = new Intent(getApplicationContext(), Cart.class);
-                        Bundle d = new Bundle();
-                        d.putString("id", id);
-                        cart.putExtras(d);
-                        startActivity(cart);
+                        Intent Cart = new Intent(getApplicationContext(), Cart.class);
+                        Bundle cart = new Bundle();
+                        cart.putString("id",id);
+                        Cart.putExtras(cart);
+                        startActivity(Cart);
                         return true;
                     case R.id.setting:
-                        Intent Setting = new Intent(getApplicationContext(), Setting.class);
-                        Bundle e = new Bundle();
-                        e.putString("id", id);
-                        Setting.putExtras(e);
-                        startActivity(Setting);
+                        Intent Settings = new Intent(getApplicationContext(),Setting.class);
+                        Bundle setting = new Bundle();
+                        setting.putString("id",id);
+                        Settings.putExtras(setting);
+                        startActivity(Settings);
                         return true;
                 }
                 return false;
