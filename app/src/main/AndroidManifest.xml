@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.top3studentpsp.pspe_koperasi">
+    package="com.gnj.e_koperasi">
     <!-- Enable instant app support -->
     <dist:module dist:instant="true" /> <!-- Declare features -->
     <uses-feature android:name="android.hardware.camera" /> <!-- Declare permissions -->
@@ -19,6 +19,10 @@
         android:theme="@style/Theme.PSPEKoperasi"
         tools:ignore="AllowBackup"
         tools:targetApi="31">
+        <activity
+            android:name=".Food"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Announcements"
             android:exported="false"
