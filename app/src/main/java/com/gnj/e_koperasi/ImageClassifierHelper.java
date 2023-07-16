@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import org.tensorflow.lite.support.common.FileUtil;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.image.ops.Rot90Op;
@@ -19,8 +20,6 @@ public class ImageClassifierHelper {
     private float threshold;
     private int numThreads;
     private int maxResults;
-    private int currentDelegate;
-    private int currentModel;
     private final Context context;
     private final ClassifierListener imageClassifierListener;
     private ImageClassifier imageClassifier;
@@ -29,13 +28,10 @@ public class ImageClassifierHelper {
      * Helper class for wrapping Image Classification actions
      */
     public ImageClassifierHelper(Float threshold, int numThreads, int maxResults,
-                                 int currentDelegate, int currentModel, Context context,
-                                 ClassifierListener imageClassifierListener) {
+                                 Context context, ClassifierListener imageClassifierListener) {
         this.threshold = threshold;
         this.numThreads = numThreads;
         this.maxResults = maxResults;
-        this.currentDelegate = currentDelegate;
-        this.currentModel = currentModel;
         this.context = context;
         this.imageClassifierListener = imageClassifierListener;
         setupImageClassifier();
@@ -46,8 +42,6 @@ public class ImageClassifierHelper {
                 0.6f,
                 2,
                 1,
-                0,
-                0,
                 context,
                 listener
         );
@@ -77,14 +71,6 @@ public class ImageClassifierHelper {
         this.maxResults = maxResults;
     }
 
-    public void setCurrentDelegate(int currentDelegate) {
-        this.currentDelegate = currentDelegate;
-    }
-
-    public void setCurrentModel(int currentModel) {
-        this.currentModel = currentModel;
-    }
-
     private void setupImageClassifier() {
         ImageClassifier.ImageClassifierOptions.Builder optionsBuilder =
                 ImageClassifier.ImageClassifierOptions.builder()
@@ -94,7 +80,7 @@ public class ImageClassifierHelper {
         BaseOptions.Builder baseOptionsBuilder =
                 BaseOptions.builder().setNumThreads(numThreads);
 
-        String modelName = "mobilenetv1.tflite";
+        String modelName = "model.tflite";
 
         try {
             imageClassifier =
@@ -126,6 +112,8 @@ public class ImageClassifierHelper {
 
         // Classify the input image
         List<Classifications> result = imageClassifier.classify(tensorImage);
+
+        // Pass the classification results to the listener.
         imageClassifierListener.onResults(result);
     }
 

@@ -1,6 +1,8 @@
 package com.gnj.e_koperasi.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -8,31 +10,65 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.gnj.e_koperasi.databinding.ItemClassificationResultBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.gnj.e_koperasi.databinding.ItemClassificationResultBinding;
+
 import org.tensorflow.lite.support.label.Category;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-/** Adapter for displaying the list of classifications for the image */
 public class ClassificationResultAdapter
         extends RecyclerView.Adapter<ClassificationResultAdapter.ViewHolder> {
     private static final String NO_VALUE = "--";
     private List<Category> categories = new ArrayList<>();
     private int adapterSize = 0;
 
+    private HashMap<String, String> labelMap = new HashMap<>();
+
+    public ClassificationResultAdapter(Context context) {
+        labelMap = readLabelsFromFile(context, "labels.txt");
+    }
+    public HashMap<String, String> readLabelsFromFile(Context context, String filePath) {
+        HashMap<String, String> labelMap = new HashMap<>();
+        try {
+            InputStream inputStream = context.getAssets().open(filePath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ", 2); // Split only on the first space
+                if (parts.length == 2) {
+                    String number = parts[0].trim();
+                    String itemName = parts[1].trim();
+                    labelMap.put(number, itemName);
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Log the contents of labelMap after populating it
+        for (String key : labelMap.keySet()) {
+            Log.d("ClassificationResult", "Label: " + key + ", Text: " + labelMap.get(key));
+        }
+
+        return labelMap;
+    }
     @SuppressLint("NotifyDataSetChanged")
     public void updateResults(List<Category> categories) {
         List<Category> sortedCategories = new ArrayList<>(categories);
@@ -54,9 +90,19 @@ public class ClassificationResultAdapter
         adapterSize = size;
     }
 
+    // Method to update the labelMap in the adapter
+    public void updateLabelMap(HashMap<String, String> labelMap) {
+        this.labelMap.clear();
+        this.labelMap.putAll(labelMap);
+
+        // Notify the adapter that the data has changed
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Update the layout file name to match your layout
         ItemClassificationResultBinding binding = ItemClassificationResultBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
@@ -64,7 +110,10 @@ public class ClassificationResultAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(categories.get(position));
+        Log.d("ClassificationResult", "Position: " + position);
+        Log.d("ClassificationResult", "Category: " + categories.get(position));
+        Log.d("ClassificationResult", "LabelMap: " + labelMap);
+        holder.bind(categories.get(position), labelMap);
     }
 
     @Override
@@ -84,31 +133,36 @@ public class ClassificationResultAdapter
             tvScore = binding.tvScore;
         }
 
-        public void bind(Category category) {
+        public void bind(Category category, HashMap<String, String> labelMap) {
             if (category != null) {
-                Query query = itemsRef.orderByChild("item_name").equalTo(category.getLabel());
+                String categoryLabel = category.getLabel();
+                Log.d("ClassificationResult", "Category Label: " + categoryLabel);
+                String itemText = labelMap.get(categoryLabel);
+                Log.d("ClassificationResult", "Category Text: " + itemText);
+
+
+                Query query = itemsRef.orderByChild("item_name").equalTo(itemText);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                String item_name = childSnapshot.child("item_name").getValue(String.class);
-                                String item_price = childSnapshot.child("item_price").getValue(String.class);
-                                if (item_name != null && item_name.equals(category.getLabel())) {
-                                    tvLabel.setText(item_name + " (" + item_price + ")");
-                                    tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
-                                    break;
-                                }
+                            DataSnapshot childSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String item_name = childSnapshot.child("item_name").getValue(String.class);
+                            String item_price = childSnapshot.child("item_price").getValue(String.class);
+                            if (item_name != null && item_name.equals(itemText)) {
+                                tvLabel.setText(item_name + " (" + item_price + ")");
+                                tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
                             }
                         } else {
-                            tvLabel.setText(category.getLabel());
+                            // If the item is not found, display the label from the labelMap as "Unknown" or any other desired text
+                            tvLabel.setText(itemText);
                             tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
                         }
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle the error if needed
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error if needed
                     }
                 });
             } else {

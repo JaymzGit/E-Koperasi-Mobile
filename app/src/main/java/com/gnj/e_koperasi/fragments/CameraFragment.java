@@ -30,6 +30,7 @@ import com.gnj.e_koperasi.databinding.FragmentCameraBinding;
 import org.tensorflow.lite.task.vision.classifier.Classifications;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -49,6 +50,9 @@ public class CameraFragment extends Fragment implements ImageClassifierHelper.Cl
      * Blocking camera operations are performed using this executor
      */
     private ExecutorService cameraExecutor;
+
+    // Declare the labelMap here
+    private HashMap<String, String> labelMap = new HashMap<>();
 
     @Nullable
     @Override
@@ -90,16 +94,24 @@ public class CameraFragment extends Fragment implements ImageClassifierHelper.Cl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         cameraExecutor = Executors.newSingleThreadExecutor();
-        imageClassifierHelper = ImageClassifierHelper.create(requireContext(), this);
 
-        // setup result adapter
-        classificationResultsAdapter = new com.gnj.e_koperasi.fragments.ClassificationResultAdapter();
-        classificationResultsAdapter.updateAdapterSize(imageClassifierHelper.getMaxResults());
-        fragmentCameraBinding.recyclerviewResults.setAdapter(classificationResultsAdapter);
-        fragmentCameraBinding.recyclerviewResults.setLayoutManager(new LinearLayoutManager(requireContext()));
+        // Initialize the adapter with the correct label map
+        classificationResultsAdapter = new ClassificationResultAdapter(requireContext());
+        labelMap = classificationResultsAdapter.readLabelsFromFile(requireContext(), "labels.txt");
 
         // Set up the camera and its use cases
         fragmentCameraBinding.viewFinder.post(this::setUpCamera);
+
+        // Set up the RecyclerView and adapter
+        fragmentCameraBinding.recyclerviewResults.setAdapter(classificationResultsAdapter);
+        fragmentCameraBinding.recyclerviewResults.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // Now, you can call the updateAdapterSize method to update the size of the adapter
+        imageClassifierHelper = ImageClassifierHelper.create(requireContext(), this);
+        classificationResultsAdapter.updateAdapterSize(imageClassifierHelper.getMaxResults());
+
+        // Update the label map in the adapter with the label map from CameraFragment
+        classificationResultsAdapter.updateLabelMap(labelMap);
     }
 
     @Override
