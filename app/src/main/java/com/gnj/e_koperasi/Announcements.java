@@ -69,7 +69,7 @@ public class Announcements extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), Cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);

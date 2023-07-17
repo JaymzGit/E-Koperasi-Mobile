@@ -90,4 +90,7 @@ dependencies {
 
     //BCrypt
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.10.2'
+    //gradle for cart
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 }

@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
     public class Catalog extends AppCompatActivity {
     String id;
+    ImageButton btnFood;
+    Button btnCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
+
+        btnFood = findViewById(R.id.btnFood);
+        btnCart = findViewById(R.id.btnViewCart);
+
+        btnFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),Food.class);
+                startActivity(i);
+            }
+        });
+
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), cart.class);
+                startActivity(i);
+            }
+        });
+
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -53,7 +77,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), Cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
