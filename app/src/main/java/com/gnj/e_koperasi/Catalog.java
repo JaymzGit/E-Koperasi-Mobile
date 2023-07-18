@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
     public class Catalog extends AppCompatActivity {
     String id;
     ImageButton btnFood;
-    Button btnCart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
         id = bundle.getString("id");
 
         btnFood = findViewById(R.id.btnFood);
-        btnCart = findViewById(R.id.btnViewCart);
+
 
         btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,13 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             }
         });
 
-        btnCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), cart.class);
-                startActivity(i);
-            }
-        });
+
 
 
 

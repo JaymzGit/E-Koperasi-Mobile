@@ -1,12 +1,18 @@
 package com.gnj.e_koperasi;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -16,6 +22,7 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
     MainAdapter2 myAdapter;
     ArrayList<MainModal2> cartlist;
     TextView totalCartPrice;
+    String id;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -27,6 +34,8 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         dispCart.setLayoutManager(new LinearLayoutManager(this));
         dispCart.setHasFixedSize(true);
         totalCartPrice = findViewById(R.id.totalPrice);
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getString("id");
 
         // Retrieve the existing orderList from MyApplication
         ArrayList<Bundle> orderList = MyApplication.getOrderList();
@@ -55,13 +64,63 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
 
         // Notify the adapter that the data set has changed
         myAdapter.notifyDataSetChanged();
+
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.cart);
+        item.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.catelog:
+                        Intent MainPage = new Intent(getApplicationContext(), Catalog.class);
+                        Bundle main = new Bundle();
+                        main.putString("id",id);
+                        MainPage.putExtras(main);
+                        startActivity(MainPage);
+                        return true;
+                    case R.id.announcements:
+                        Intent Announcements = new Intent(getApplicationContext(), Announcements.class);
+                        Bundle announce = new Bundle();
+                        announce.putString("id",id);
+                        Announcements.putExtras(announce);
+                        startActivity(Announcements);
+                        return true;
+                    case R.id.scan:
+                        Intent ScanItems = new Intent(getApplicationContext(), ScanItems.class);
+                        Bundle scan = new Bundle();
+                        scan.putString("id",id);
+                        ScanItems.putExtras(scan);
+                        startActivity(ScanItems);
+                        return true;
+                    case R.id.cart:
+                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Bundle cart = new Bundle();
+                        cart.putString("id",id);
+                        Cart.putExtras(cart);
+                        startActivity(Cart);
+                        return true;
+                    case R.id.setting:
+                        Intent Settings = new Intent(getApplicationContext(),Setting.class);
+                        Bundle setting = new Bundle();
+                        setting.putString("id",id);
+                        Settings.putExtras(setting);
+                        startActivity(Settings);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
 
     @Override
     public void onTotalCartPriceUpdated(double totalCartPrice) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        this.totalCartPrice.setText(decimalFormat.format(totalCartPrice));
+        this.totalCartPrice.setText("Total price:RM " + decimalFormat.format(totalCartPrice));
     }
 
     @Override
@@ -70,6 +129,6 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         // Update the total cart price
         myAdapter.calculateTotalCartPrice();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        totalCartPrice.setText(decimalFormat.format(myAdapter.getTotalCartPrice()));
+        totalCartPrice.setText("Total price:RM " +decimalFormat.format(myAdapter.getTotalCartPrice()));
     }
 }
