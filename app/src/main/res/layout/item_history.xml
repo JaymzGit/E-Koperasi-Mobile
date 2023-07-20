@@ -2,26 +2,58 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/border"
     android:orientation="vertical"
     android:padding="16dp">
 
     <!-- Purchase Group Summary -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <!-- Spacer View to push the button to the right side -->
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/thasadith_bold"
+            android:text="KitKat"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Expand Button -->
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/thasadith_bold"
+            android:text="-RM3.50"
+            android:textColor="#FF0000"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Purchase Date"
+        android:fontFamily="@font/thasadith_bold"
+        android:text="2023-07-16"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
     <!-- Purchase Date -->
 
-    <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Price : RM"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp" />
+    <!-- Total Price -->
 
 </LinearLayout>

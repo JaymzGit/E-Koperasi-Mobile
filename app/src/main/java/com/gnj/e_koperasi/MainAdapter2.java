@@ -32,7 +32,7 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.cart, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_cart, parent, false);
         return new MyViewHolder(v, cartlist);
     }
 
@@ -46,7 +46,7 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
                 .into(holder.item_image);
         holder.item_name.setText(mainModal.getItem_name());
         holder.item_price.setText(String.valueOf(mainModal.getItem_price()) + "0");
-        holder.item_quantity.setText("x" + String.valueOf(mainModal.getQuantity()));
+        holder.item_quantity.setText(" x " + String.valueOf(mainModal.getQuantity()));
         DecimalFormat decimalFormat = new DecimalFormat("0.00"); // Format for two decimal places
         holder.item_totalprice.setText(decimalFormat.format(mainModal.getTotalPrice()));
         holder.delete.setTag(position);
@@ -91,8 +91,6 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
                     }
                 }
             });
-
-
         }
     }
 
@@ -105,7 +103,6 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
             totalCartPriceListener.onTotalCartPriceUpdated(totalCartPrice);
         }
     }
-
 
     public double getTotalCartPrice() {
         return totalCartPrice;

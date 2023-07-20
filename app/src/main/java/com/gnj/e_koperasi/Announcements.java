@@ -69,7 +69,7 @@ public class Announcements extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
@@ -110,22 +110,21 @@ public class Announcements extends AppCompatActivity {
                         announcements.add(announcement);
                     }
                 }
-                // Sort the announcements list based on time and date
+                // Sort the announcements list based on date and time
                 Collections.sort(announcements, new Comparator<Announcement>() {
                     @Override
                     public int compare(Announcement a1, Announcement a2) {
                         String dateTime1 = a1.getDate() + " " + a1.getTime();
                         String dateTime2 = a2.getDate() + " " + a2.getTime();
-                        return dateTime1.compareTo(dateTime2);
+                        return dateTime2.compareTo(dateTime1); // For descending order (latest date and time on top)
                     }
                 });
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error
-                Toast.makeText(Announcements.this, "Failed to retrieve announcements: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Announcements.this, "Failed to load announcements: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

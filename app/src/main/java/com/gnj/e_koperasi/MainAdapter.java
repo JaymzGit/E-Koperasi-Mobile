@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,18 +18,22 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> implements Filterable {
     Context context;
     ArrayList<MainModal> itemlist;
+    ArrayList<MainModal> originalItemList; // Reference to the original list
+    String id;
 
-    public MainAdapter(Context context, ArrayList<MainModal> itemlist) {
+    public MainAdapter(Context context, ArrayList<MainModal> itemlist, String id) {
         this.context = context;
         this.itemlist = itemlist;
+        this.originalItemList = new ArrayList<>(itemlist); // Make a copy of the original list
+        this.id = id;
     }
 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.main_item, parent, false);
-        return new MyViewHolder(v, itemlist);
+        return new MyViewHolder(v, itemlist, id);
     }
 
     @Override
@@ -51,11 +57,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         ImageView item_image;
         TextView item_name, item_price;
         ArrayList<MainModal> itemlist;
+        String id;
 
-        public MyViewHolder(@NonNull View itemView, ArrayList<MainModal> itemlist) {
+        public MyViewHolder(@NonNull View itemView, ArrayList<MainModal> itemlist, String id) {
             super(itemView);
 
             this.itemlist = itemlist;
+            this.id = id;
 
             item_image = itemView.findViewById(R.id.itemImage);
             item_name = itemView.findViewById(R.id.name);
@@ -73,16 +81,47 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
                 double itemPrice = mainModal.getItem_price();
                 String itemImage = mainModal.getItem_image();
 
-                Intent i = new Intent(v.getContext(), viewItem.class);
+                Intent i = new Intent(v.getContext(), ViewItem.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("itemName", itemName);
                 bundle.putDouble("itemPrice", itemPrice);
                 bundle.putString("itemImage", itemImage);
+                bundle.putString("id", id); // Use the id from the class member variable
                 i.putExtras(bundle);
                 v.getContext().startActivity(i);
             }
         }
-
-    }
     }
 
+    @Override
+    public Filter getFilter() {
+        return itemFilter;
+    }
+
+    private Filter itemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<MainModal> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(originalItemList); // Return the original list if the search query is empty
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (MainModal item : originalItemList) {
+                    if (item.getItem_name().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            itemlist.clear();
+            itemlist.addAll((ArrayList<MainModal>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+}

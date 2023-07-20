@@ -2,7 +2,7 @@ package com.gnj.e_koperasi;
 
 public class MainModal {
 
-    String item_category,item_image,item_name;
+    String item_category, item_image, item_name, id;
     double item_price;
     int item_id,item_quantity;
 
@@ -13,9 +13,8 @@ public class MainModal {
         this.item_price = item_price;
         this.item_id = item_id;
         this.item_quantity = item_quantity;
+        this.id = id;
     }
-
-
 
     MainModal(){
 

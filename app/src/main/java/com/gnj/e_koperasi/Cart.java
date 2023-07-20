@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPriceListener {
+public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPriceListener {
     RecyclerView dispCart;
     MainAdapter2 myAdapter;
     ArrayList<MainModal2> cartlist;
@@ -97,7 +97,7 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
@@ -120,7 +120,7 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
     @Override
     public void onTotalCartPriceUpdated(double totalCartPrice) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        this.totalCartPrice.setText("Total price:RM " + decimalFormat.format(totalCartPrice));
+        this.totalCartPrice.setText("Total price : RM " + decimalFormat.format(totalCartPrice));
     }
 
     @Override
@@ -129,6 +129,6 @@ public class cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         // Update the total cart price
         myAdapter.calculateTotalCartPrice();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        totalCartPrice.setText("Total price:RM " +decimalFormat.format(myAdapter.getTotalCartPrice()));
+        totalCartPrice.setText("Total price : RM " +decimalFormat.format(myAdapter.getTotalCartPrice()));
     }
 }

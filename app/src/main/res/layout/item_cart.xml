@@ -52,6 +52,15 @@
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/quantities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/thasadith_bold"
+                android:text="x1"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
         </LinearLayout>
 
         <!-- Total: RM and Total Price side by side -->
@@ -60,10 +69,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="2dp"/>
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/thasadith_bold"
+                android:text="Total: RM"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/totalprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/thasadith_bold"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <!-- Delete Button on the far right -->
 
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_delete" />
 </LinearLayout>

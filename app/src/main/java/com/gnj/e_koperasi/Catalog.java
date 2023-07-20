@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,18 +28,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
         btnFood = findViewById(R.id.btnFood);
 
-
         btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),Food.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                i.putExtras(bundle);
                 startActivity(i);
             }
         });
-
-
-
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -71,7 +69,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);

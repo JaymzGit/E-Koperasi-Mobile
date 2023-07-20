@@ -50,7 +50,7 @@ public class AboutUs extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
