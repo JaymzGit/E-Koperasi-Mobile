@@ -85,8 +85,6 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         // Notify the adapter that the data set has changed
         myAdapter.notifyDataSetChanged();
 
-
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem item = menu.findItem(R.id.cart);
@@ -135,7 +133,6 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
             }
         });
     }
-
 
     @Override
     public void onTotalCartPriceUpdated(double totalCartPrice) {

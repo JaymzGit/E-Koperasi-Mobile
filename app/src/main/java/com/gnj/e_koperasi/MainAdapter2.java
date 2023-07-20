@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
                 .into(holder.item_image);
         holder.item_name.setText(mainModal.getItem_name());
         holder.item_price.setText(String.valueOf(mainModal.getItem_price()) + "0");
-        holder.item_quantity.setText(" x " + String.valueOf(mainModal.getQuantity()));
+        holder.item_quantity.setText(String.valueOf(mainModal.getQuantity()));
         DecimalFormat decimalFormat = new DecimalFormat("0.00"); // Format for two decimal places
         holder.item_totalprice.setText(decimalFormat.format(mainModal.getTotalPrice()));
         holder.delete.setTag(position);
@@ -61,6 +62,7 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
         ImageView item_image;
         TextView item_name, item_price, item_quantity, item_totalprice;
         ImageButton delete;
+        Button btnAdd, btnMinus;
         ArrayList<MainModal2> cartlist;
 
         public MyViewHolder(@NonNull View itemView, ArrayList<MainModal2> cartlist) {
@@ -72,6 +74,8 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
             item_quantity = itemView.findViewById(R.id.quantities);
             item_totalprice = itemView.findViewById(R.id.totalprice);
             delete = itemView.findViewById(R.id.btnDelete);
+            btnAdd = itemView.findViewById(R.id.btnAdd2);
+            btnMinus = itemView.findViewById(R.id.btnMinus2);
 
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,6 +91,66 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
                         ArrayList<Bundle> orderList = MyApplication.getOrderList();
                         if (orderList != null && position < orderList.size()) {
                             orderList.remove(position);
+                        }
+                    }
+                }
+            });
+
+            // Minus Button Click Listener
+            btnMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        MainModal2 item = cartlist.get(position);
+                        int currentQuantity = item.getQuantity();
+                        if (currentQuantity > 1) {
+                            item.setQuantity(currentQuantity - 1);
+                            notifyItemChanged(position);
+                            calculateTotalCartPrice(); // Recalculate the total price after updating the quantity
+
+                            // Update the corresponding order in the orderList in MyApplication
+                            ArrayList<Bundle> orderList = MyApplication.getOrderList();
+                            if (orderList != null && position < orderList.size()) {
+                                Bundle order = orderList.get(position);
+                                int updatedQuantity = currentQuantity - 1;
+                                order.putInt("quantity", updatedQuantity);
+                            }
+                        } else {
+                            // If the item quantity is 1, remove the entire item from the list
+                            cartlist.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, cartlist.size());
+                            calculateTotalCartPrice(); // Recalculate the total price after removing an item
+
+                            // Remove the corresponding order from the orderList in MyApplication
+                            ArrayList<Bundle> orderList = MyApplication.getOrderList();
+                            if (orderList != null && position < orderList.size()) {
+                                orderList.remove(position);
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Plus Button Click Listener
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        MainModal2 item = cartlist.get(position);
+                        int currentQuantity = item.getQuantity();
+                        item.setQuantity(currentQuantity + 1);
+                        notifyItemChanged(position);
+                        calculateTotalCartPrice(); // Recalculate the total price after updating the quantity
+
+                        // Update the corresponding order in the orderList in MyApplication
+                        ArrayList<Bundle> orderList = MyApplication.getOrderList();
+                        if (orderList != null && position < orderList.size()) {
+                            Bundle order = orderList.get(position);
+                            int updatedQuantity = currentQuantity + 1;
+                            order.putInt("quantity", updatedQuantity);
                         }
                     }
                 }
