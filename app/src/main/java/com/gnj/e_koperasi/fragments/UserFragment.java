@@ -15,6 +15,7 @@ import com.gnj.e_koperasi.HistoryPage;
 import com.gnj.e_koperasi.MainActivity;
 import com.gnj.e_koperasi.PasswordChange;
 import com.gnj.e_koperasi.R;
+import com.gnj.e_koperasi.SharedPrefManager;
 import com.gnj.e_koperasi.User;
 import com.gnj.e_koperasi.UserProfile;
 
@@ -80,6 +81,9 @@ public class UserFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPrefManager sharedPrefManager = new SharedPrefManager(getActivity());
+                sharedPrefManager.setLoggedIn(false);
+
                 startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });

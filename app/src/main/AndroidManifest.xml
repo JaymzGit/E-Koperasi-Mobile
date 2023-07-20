@@ -20,6 +20,12 @@
         tools:ignore="AllowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".Stationaries"
+            android:exported="false" />
+        <activity
+            android:name=".Drinks"
+            android:exported="false" />
+        <activity
             android:name=".Food"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -44,7 +50,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".cart"
+            android:name=".Cart"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -82,7 +88,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".viewItem"
+            android:name=".ViewItem"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>

@@ -18,8 +18,8 @@ public class ScanItems extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_items);
 
-        Bundle bundle = getIntent().getExtras();
-        id = bundle.getString("id");
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(this);
+        id = sharedPrefManager.getUserId();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -51,7 +51,7 @@ public class ScanItems extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);

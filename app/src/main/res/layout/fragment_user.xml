@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="250dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
-        android:text="HISTORY" />
+        android:text="PURCHASE HISTORY" />
 
     <Button
         android:id="@+id/btnProfile"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
         android:text="ABOUT US" />

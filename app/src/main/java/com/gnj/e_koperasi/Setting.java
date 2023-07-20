@@ -30,8 +30,8 @@ public class Setting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        Bundle b = getIntent().getExtras();
-        id = (b.getString("id")).toUpperCase();
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getString("id");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id.equals("GUEST")) {
@@ -89,18 +89,13 @@ public class Setting extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
                         startActivity(Cart);
                         return true;
                     case R.id.setting:
-                        Intent Settings = new Intent(getApplicationContext(),Setting.class);
-                        Bundle setting = new Bundle();
-                        setting.putString("id",id);
-                        Settings.putExtras(setting);
-                        startActivity(Settings);
                         return true;
                 }
                 return false;
