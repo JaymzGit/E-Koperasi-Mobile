@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
     ArrayList<MainModal2> cartlist;
     TextView totalCartPrice;
     String id;
+    Button button2;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -31,6 +34,8 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         dispCart = findViewById(R.id.cartList);
+        button2=findViewById(R.id.button2);
+        button2.setVisibility(View.GONE);
         dispCart.setLayoutManager(new LinearLayoutManager(this));
         dispCart.setHasFixedSize(true);
         totalCartPrice = findViewById(R.id.totalPrice);
@@ -55,6 +60,21 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
 
                 MainModal2 item = new MainModal2(imageUrl, itemName, itemPrice, quantity, totalPrice);
                 cartlist.add(item);
+
+                button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent Checkout = new Intent(getApplicationContext(),ShowCheckOut.class);
+                        Bundle checkout = new Bundle();
+                        checkout.putString("id",id);
+                        checkout.putString("itemName",itemName);
+                        checkout.putString("itemPrice", String.valueOf(itemPrice));
+                        checkout.putString("quantity", String.valueOf(quantity));
+                        checkout.putString("totalPrice", String.valueOf(totalPrice));
+                        Checkout.putExtras(checkout);
+                        startActivity(Checkout);
+                    }
+                });
             }
         }
 
@@ -97,6 +117,11 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
+                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
+                        Bundle cart = new Bundle();
+                        cart.putString("id",id);
+                        Cart.putExtras(cart);
+                        startActivity(Cart);
                         return true;
                     case R.id.setting:
                         Intent Settings = new Intent(getApplicationContext(),Setting.class);
@@ -116,6 +141,11 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
     public void onTotalCartPriceUpdated(double totalCartPrice) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         this.totalCartPrice.setText("Total price : RM " + decimalFormat.format(totalCartPrice));
+        if (totalCartPrice == 0) {
+            button2.setVisibility(View.GONE);
+        } else {
+            button2.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -123,7 +153,13 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         super.onResume();
         // Update the total cart price
         myAdapter.calculateTotalCartPrice();
+        double totalCartPrice = myAdapter.getTotalCartPrice();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        totalCartPrice.setText("Total price : RM " +decimalFormat.format(myAdapter.getTotalCartPrice()));
+        this.totalCartPrice.setText("Total price : RM " + decimalFormat.format(totalCartPrice));
+        if (totalCartPrice == 0) {
+            button2.setVisibility(View.GONE);
+        } else {
+            button2.setVisibility(View.VISIBLE);
+        }
     }
 }

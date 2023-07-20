@@ -20,6 +20,9 @@
         tools:ignore="AllowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".ShowCheckOut"
+            android:exported="false" />
+        <activity
             android:name=".Stationaries"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
