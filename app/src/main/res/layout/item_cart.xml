@@ -1,9 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:paddingLeft="8dp"
+    android:paddingTop="8dp"
+    android:paddingRight="50dp"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/itemImage"
@@ -12,23 +16,37 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_launcher_background" />
 
-    <!-- Name and other details in the center -->
-
+    <!-- Name, Quantity, and other details in the center -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/thasadith_bold"
-            android:text="Tam Tam"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/thasadith_bold"
+                android:text="Tam Tam"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/quantities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/thasadith_bold"
+                android:text="x1"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,25 +69,13 @@
                 android:text="0"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/quantities"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/thasadith_bold"
-                android:text="x1"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
-
         </LinearLayout>
-
-        <!-- Total: RM and Total Price side by side -->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,17 +94,14 @@
                 android:text="0"
                 android:textColor="#FFFFFF"
                 android:textSize="17sp" />
+
         </LinearLayout>
 
     </LinearLayout>
-
-    <!-- Delete Button on the far right -->
 
     <ImageButton
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_delete" />
+        android:background="@android:drawable/ic_delete" />
 </LinearLayout>

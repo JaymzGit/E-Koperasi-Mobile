@@ -44,11 +44,6 @@ public class ScanItems extends AppCompatActivity {
                         startActivity(Announcements);
                         return true;
                     case R.id.scan:
-                        Intent ScanItems = new Intent(getApplicationContext(), ScanItems.class);
-                        Bundle scan = new Bundle();
-                        scan.putString("id",id);
-                        ScanItems.putExtras(scan);
-                        startActivity(ScanItems);
                         return true;
                     case R.id.cart:
                         Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);

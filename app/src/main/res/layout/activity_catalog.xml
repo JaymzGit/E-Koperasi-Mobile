@@ -142,7 +142,7 @@
         app:layout_constraintVertical_bias="0.666">
 
         <ImageButton
-            android:id="@+id/btnstationeries"
+            android:id="@+id/btnStationaries"
             android:layout_width="155dp"
             android:layout_height="152dp"
             android:background="@null"
@@ -178,7 +178,7 @@
         app:layout_constraintVertical_bias="0.666">
 
         <ImageButton
-            android:id="@+id/btnDailyNeeds"
+            android:id="@+id/btnMisc"
             android:layout_width="155dp"
             android:layout_height="152dp"
             android:background="@null"
@@ -187,7 +187,7 @@
             android:paddingRight="20dp"
             android:paddingBottom="40dp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/dailyneeds" />
+            app:srcCompat="@drawable/misc" />
 
         <TextView
             android:layout_width="wrap_content"

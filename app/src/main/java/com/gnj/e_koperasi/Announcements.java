@@ -55,11 +55,6 @@ public class Announcements extends AppCompatActivity {
                         startActivity(MainPage);
                         return true;
                     case R.id.announcements:
-                        Intent Announcements = new Intent(getApplicationContext(), Announcements.class);
-                        Bundle announce = new Bundle();
-                        announce.putString("id",id);
-                        Announcements.putExtras(announce);
-                        startActivity(Announcements);
                         return true;
                     case R.id.scan:
                         Intent ScanItems = new Intent(getApplicationContext(), ScanItems.class);

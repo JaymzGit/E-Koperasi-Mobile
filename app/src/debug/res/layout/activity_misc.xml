@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".Drinks">
+    tools:context=".Misc">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -24,20 +24,20 @@
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="333dp"
-        android:layout_height="35dp"
+        android:layout_height="36dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/search_view"
         android:iconifiedByDefault="false"
         android:queryHint="Search Here..."
-        app:layout_constraintBottom_toTopOf="@+id/dispDrinks"
+        app:layout_constraintBottom_toTopOf="@+id/dispMisc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dispDrinks"
+        android:id="@+id/dispMisc"
         android:layout_width="411dp"
         android:layout_height="609dp"
         android:layout_marginTop="12dp"

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
         android:text="LOG OUT" />
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
         android:text="ABOUT US" />

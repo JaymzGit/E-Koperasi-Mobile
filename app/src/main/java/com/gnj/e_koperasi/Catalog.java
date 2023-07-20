@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
     public class Catalog extends AppCompatActivity {
     String id;
-    ImageButton btnFood;
+    ImageButton btnFood, btnDrinks, btnStationaries, btnMisc;
 
 
     @Override
@@ -27,11 +27,47 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
         id = bundle.getString("id");
 
         btnFood = findViewById(R.id.btnFood);
+        btnDrinks = findViewById(R.id.btnDrinks);
+        btnStationaries = findViewById(R.id.btnStationaries);
+        btnMisc = findViewById(R.id.btnMisc);
 
         btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),Food.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+
+        btnDrinks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),Drinks.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+
+        btnStationaries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),Stationaries.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+
+        btnMisc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),Misc.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id",id);
                 i.putExtras(bundle);
@@ -48,11 +84,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.catelog:
-                        Intent MainPage = new Intent(getApplicationContext(), Catalog.class);
-                        Bundle main = new Bundle();
-                        main.putString("id",id);
-                        MainPage.putExtras(main);
-                        startActivity(MainPage);
                         return true;
                     case R.id.announcements:
                         Intent Announcements = new Intent(getApplicationContext(), Announcements.class);

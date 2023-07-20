@@ -20,9 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Food extends AppCompatActivity {
+public class Misc extends AppCompatActivity {
     String id;
-    RecyclerView dispFood;
+    RecyclerView dispMisc;
     DatabaseReference database;
     MainAdapter myAdapter;
     ArrayList<MainModal> itemlist;
@@ -30,18 +30,18 @@ public class Food extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food);
+        setContentView(R.layout.activity_misc);
 
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
 
         database = FirebaseDatabase.getInstance().getReference("item");
-        dispFood = findViewById(R.id.dispFood);
-        dispFood.setLayoutManager(new LinearLayoutManager(this));
+        dispMisc = findViewById(R.id.dispMisc);
+        dispMisc.setLayoutManager(new LinearLayoutManager(this));
 
         itemlist = new ArrayList<>();
         myAdapter = new MainAdapter(this, itemlist, id);
-        dispFood.setAdapter(myAdapter);
+        dispMisc.setAdapter(myAdapter);
 
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -63,7 +63,7 @@ public class Food extends AppCompatActivity {
                 itemlist.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     MainModal mainModal = dataSnapshot.getValue(MainModal.class);
-                    if (mainModal != null && "food".equals(mainModal.getItem_category())) {
+                    if (mainModal != null && "other".equals(mainModal.getItem_category())) {
                         itemlist.add(mainModal);
                     }
                 }

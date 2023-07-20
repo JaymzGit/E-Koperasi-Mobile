@@ -117,7 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent guest = new Intent(getApplicationContext(), ScanItems.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", "GUEST");
+                    id = "GUEST";
+                    bundle.putString("id", id);
+                    SharedPrefManager sharedPrefManager = new SharedPrefManager(MainActivity.this);
+                    sharedPrefManager.saveUserId(id);
                     guest.putExtras(bundle);
                     startActivity(guest);
                 }
