@@ -62,11 +62,6 @@ public class ClassificationResultAdapter
             e.printStackTrace();
         }
 
-        // Log the contents of labelMap after populating it
-        for (String key : labelMap.keySet()) {
-            Log.d("ClassificationResult", "Label: " + key + ", Text: " + labelMap.get(key));
-        }
-
         return labelMap;
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -110,9 +105,6 @@ public class ClassificationResultAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("ClassificationResult", "Position: " + position);
-        Log.d("ClassificationResult", "Category: " + categories.get(position));
-        Log.d("ClassificationResult", "LabelMap: " + labelMap);
         holder.bind(categories.get(position), labelMap);
     }
 
@@ -148,9 +140,9 @@ public class ClassificationResultAdapter
                         if (dataSnapshot.exists()) {
                             DataSnapshot childSnapshot = dataSnapshot.getChildren().iterator().next();
                             String item_name = childSnapshot.child("item_name").getValue(String.class);
-                            String item_price = childSnapshot.child("item_price").getValue(String.class);
-                            if (item_name != null && item_name.equals(itemText)) {
-                                tvLabel.setText(item_name + " (" + item_price + ")");
+                            Double item_price = childSnapshot.child("item_price").getValue(Double.class);
+                            if (item_name != null && item_name.equals(itemText) && item_price != null) {
+                                tvLabel.setText(item_name + " (RM " + String.format(Locale.US, "%.2f", item_price) + ")");
                                 tvScore.setText(String.format(Locale.US, "%.2f%%", category.getScore() * 100));
                             }
                         } else {
