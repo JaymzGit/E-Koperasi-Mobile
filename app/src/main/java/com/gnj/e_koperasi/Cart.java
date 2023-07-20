@@ -58,7 +58,7 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                 int quantity = orderBundle.getInt("itemQuantities");
                 double totalPrice = orderBundle.getDouble("totalPrice");
 
-                MainModal2 item = new MainModal2(imageUrl, itemName, itemPrice, quantity, totalPrice);
+                MainModal2 item = new MainModal2(imageUrl, itemName, itemPrice, quantity);
                 cartlist.add(item);
 
                 button2.setOnClickListener(new View.OnClickListener() {

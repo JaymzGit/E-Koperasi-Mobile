@@ -8,12 +8,11 @@ public class MainModal2 {
     MainModal2(){
 
     }
-    public MainModal2(String item_image, String item_name, double item_price, int quantity, double totalPrice) {
+    public MainModal2(String item_image, String item_name, double item_price, int quantity) {
         this.item_image = item_image;
         this.item_name = item_name;
         this.item_price = item_price;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
     }
 
     public String getItem_image() {

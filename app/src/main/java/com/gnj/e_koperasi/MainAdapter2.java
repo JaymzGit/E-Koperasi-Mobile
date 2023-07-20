@@ -49,7 +49,10 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
         holder.item_price.setText(String.valueOf(mainModal.getItem_price()) + "0");
         holder.item_quantity.setText(String.valueOf(mainModal.getQuantity()));
         DecimalFormat decimalFormat = new DecimalFormat("0.00"); // Format for two decimal places
-        holder.item_totalprice.setText(decimalFormat.format(mainModal.getTotalPrice()));
+
+        // Calculate the total item price based on the item price and quantity
+        double totalItemPrice = mainModal.getItem_price() * mainModal.getQuantity();
+        holder.item_totalprice.setText(decimalFormat.format(totalItemPrice));
         holder.delete.setTag(position);
     }
 
@@ -161,7 +164,8 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainAdapter2.MyViewHolder
     void calculateTotalCartPrice() {
         totalCartPrice = 0.0;
         for (MainModal2 item : cartlist) {
-            totalCartPrice += item.getTotalPrice();
+            double totalItemPrice = item.getItem_price() * item.getQuantity();
+            totalCartPrice += totalItemPrice;
         }
         if (totalCartPriceListener != null) {
             totalCartPriceListener.onTotalCartPriceUpdated(totalCartPrice);
