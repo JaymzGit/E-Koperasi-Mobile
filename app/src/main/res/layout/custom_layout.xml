@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round"
+    android:minWidth="500dp"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/tv_alert_message"
+        android:layout_width="366dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/thasadith_bold"
+        android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="20dp"
+        android:text="Are you sure you want to log out?"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/confirm_no_logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="80dp"
+        android:backgroundTint="#CA86F3"
+        android:fontFamily="@font/thasadith_bold"
+        android:padding="10dp"
+        android:text="NO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/confirm_yes_logout_button"
+        app:layout_constraintTop_toBottomOf="@id/tv_alert_message" />
+
+    <Button
+        android:id="@+id/confirm_yes_logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#CA86F3"
+        android:fontFamily="@font/thasadith_bold"
+        android:padding="10dp"
+        android:text="YES"
+        app:layout_constraintEnd_toStartOf="@id/confirm_no_logout_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_alert_message" />
+</androidx.constraintlayout.widget.ConstraintLayout>

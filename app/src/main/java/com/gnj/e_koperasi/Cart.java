@@ -159,4 +159,9 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
             button2.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

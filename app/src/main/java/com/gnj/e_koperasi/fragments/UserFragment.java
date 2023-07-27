@@ -1,5 +1,7 @@
 package com.gnj.e_koperasi.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,6 +24,7 @@ import com.gnj.e_koperasi.UserProfile;
 public class UserFragment extends Fragment {
 
     String id;
+    AlertDialog alertDialog;
 
     public UserFragment() {
         // Required empty public constructor
@@ -81,10 +84,34 @@ public class UserFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPrefManager sharedPrefManager = new SharedPrefManager(getActivity());
-                sharedPrefManager.setLoggedIn(false);
+                View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
 
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setView(customLayout);
+
+                // Find the YES and NO buttons in the custom layout
+                Button yesButton = customLayout.findViewById(R.id.confirm_yes_logout_button);
+                Button noButton = customLayout.findViewById(R.id.confirm_no_logout_button);
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SharedPrefManager sharedPrefManager = new SharedPrefManager(getActivity());
+                        sharedPrefManager.setLoggedIn(false);
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        alertDialog.dismiss(); // Dismiss the AlertDialog when YES is clicked
+                    }
+                });
+
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss(); // Dismiss the AlertDialog when NO is clicked
+                    }
+                });
+
+                alertDialog = alertDialogBuilder.create(); // Create the AlertDialog
+                alertDialog.show();
             }
         });
 

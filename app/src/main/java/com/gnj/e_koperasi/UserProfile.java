@@ -161,4 +161,13 @@ public class UserProfile extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(getApplicationContext(), Setting.class);
+        Bundle info = new Bundle();
+        info.putString("id",id);
+        back.putExtras(info);
+        startActivity(back);
+        super.onBackPressed();
+    }
 }

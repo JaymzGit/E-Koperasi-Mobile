@@ -1,5 +1,7 @@
 package com.gnj.e_koperasi.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,9 +15,11 @@ import android.widget.Button;
 import com.gnj.e_koperasi.AboutUs;
 import com.gnj.e_koperasi.MainActivity;
 import com.gnj.e_koperasi.R;
+import com.gnj.e_koperasi.SharedPrefManager;
 
 public class GuestFragment extends Fragment {
     String id;
+    AlertDialog alertDialog;
     public GuestFragment() {
         // Required empty public constructor
     }
@@ -43,7 +47,32 @@ public class GuestFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setView(customLayout);
+
+                // Find the YES and NO buttons in the custom layout
+                Button yesButton = customLayout.findViewById(R.id.confirm_yes_logout_button);
+                Button noButton = customLayout.findViewById(R.id.confirm_no_logout_button);
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        alertDialog.dismiss();
+                    }
+                });
+
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog = alertDialogBuilder.create(); // Create the AlertDialog
+                alertDialog.show();
             }
         });
 

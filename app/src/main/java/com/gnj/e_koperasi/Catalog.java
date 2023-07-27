@@ -118,4 +118,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

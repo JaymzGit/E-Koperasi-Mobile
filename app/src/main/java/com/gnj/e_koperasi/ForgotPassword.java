@@ -97,4 +97,8 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

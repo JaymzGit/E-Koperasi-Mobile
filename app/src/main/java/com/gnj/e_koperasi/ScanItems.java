@@ -3,16 +3,20 @@ package com.gnj.e_koperasi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ScanItems extends AppCompatActivity {
     String id;
+    AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +76,34 @@ public class ScanItems extends AppCompatActivity {
             // (https://issuetracker.google.com/issues/139738913)
             finishAfterTransition();
         } else {
-            super.onBackPressed();
+            View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setView(customLayout);
+
+            // Find the YES and NO buttons in the custom layout
+            Button yesButton = customLayout.findViewById(R.id.confirm_yes_logout_button);
+            Button noButton = customLayout.findViewById(R.id.confirm_no_logout_button);
+
+            yesButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
+                    sharedPrefManager.setLoggedIn(false);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    alertDialog.dismiss(); // Dismiss the AlertDialog when YES is clicked
+                }
+            });
+
+            noButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alertDialog.dismiss(); // Dismiss the AlertDialog when NO is clicked
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create(); // Create the AlertDialog
+            alertDialog.show();
         }
     }
 }

@@ -159,4 +159,10 @@ public class Register extends AppCompatActivity {
             return true;
         }
     }
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(back);
+        super.onBackPressed();
+    }
 }

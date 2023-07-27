@@ -146,4 +146,10 @@ public class OTPActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(getApplicationContext(), ForgotPassword.class);
+        startActivity(back);
+        super.onBackPressed();
+    }
 }

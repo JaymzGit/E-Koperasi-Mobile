@@ -3,6 +3,7 @@ package com.gnj.e_koperasi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvSignUp, tvGuest, tvForgotPassword;
     EditText userID, password;
     String id, pass;
+    AlertDialog alertDialog;
     DatabaseReference userRef;
 
     @Override
