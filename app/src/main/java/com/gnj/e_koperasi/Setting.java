@@ -106,4 +106,12 @@ public class Setting extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    public void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.setting);
+        item.setChecked(true);
+        super.onResume();
+    }
 }

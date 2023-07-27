@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShowCheckOut extends AppCompatActivity {
     String id,itemName,itemPrice,quantity,totalPrice;
@@ -37,5 +41,13 @@ public class ShowCheckOut extends AppCompatActivity {
         back.putExtras(info);
         startActivity(back);
         super.onBackPressed();
+    }
+
+    public void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.cart);
+        item.setChecked(true);
+        super.onResume();
     }
 }

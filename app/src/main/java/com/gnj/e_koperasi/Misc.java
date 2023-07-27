@@ -133,4 +133,12 @@ public class Misc extends AppCompatActivity {
         startActivity(back);
         super.onBackPressed();
     }
+
+    public void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.catelog);
+        item.setChecked(true);
+        super.onResume();
+    }
 }

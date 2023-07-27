@@ -147,7 +147,12 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
 
     @Override
     protected void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.cart);
+        item.setChecked(true);
         super.onResume();
+
         // Update the total cart price
         myAdapter.calculateTotalCartPrice();
         double totalCartPrice = myAdapter.getTotalCartPrice();

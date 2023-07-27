@@ -69,6 +69,14 @@ public class ScanItems extends AppCompatActivity {
         });
     }
 
+    public void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.scan);
+        item.setChecked(true);
+        super.onResume();
+    }
+
     @Override
     public void onBackPressed() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {

@@ -170,4 +170,12 @@ public class UserProfile extends AppCompatActivity {
         startActivity(back);
         super.onBackPressed();
     }
+
+    public void onResume() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.setting);
+        item.setChecked(true);
+        super.onResume();
+    }
 }

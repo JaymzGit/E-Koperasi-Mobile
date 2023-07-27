@@ -122,4 +122,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
     public void onBackPressed() {
         super.onBackPressed();
     }
+        public void onResume() {
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+            Menu menu = bottomNavigationView.getMenu();
+            MenuItem item = menu.findItem(R.id.catelog);
+            item.setChecked(true);
+            super.onResume();
+        }
 }
