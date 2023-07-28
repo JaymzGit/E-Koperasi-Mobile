@@ -1,6 +1,9 @@
 package com.gnj.e_koperasi;
 
-public class MainModal2 {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MainModal2 implements Parcelable{
     String item_image,item_name;
     double item_price,totalPrice;
     int quantity;
@@ -53,4 +56,41 @@ public class MainModal2 {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+
+
+    protected MainModal2(Parcel in) {
+        item_image = in.readString();
+        item_name = in.readString();
+        item_price = in.readDouble();
+        totalPrice = in.readDouble(); // Added read for totalPrice
+        quantity = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(item_image);
+        dest.writeString(item_name);
+        dest.writeDouble(item_price);
+        dest.writeDouble(totalPrice); // Added write for totalPrice
+        dest.writeInt(quantity);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<MainModal2> CREATOR = new Parcelable.Creator<MainModal2>() {
+        @Override
+        public MainModal2 createFromParcel(Parcel in) {
+            return new MainModal2(in);
+        }
+
+        @Override
+        public MainModal2[] newArray(int size) {
+            return new MainModal2[size];
+        }
+    };
+
 }

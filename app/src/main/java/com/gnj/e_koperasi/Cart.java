@@ -72,6 +72,7 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                         checkout.putString("quantity", String.valueOf(quantity));
                         checkout.putString("totalPrice", String.valueOf(totalPrice));
                         Checkout.putExtras(checkout);
+                        Checkout.putExtra("cartlist", cartlist);
                         startActivity(Checkout);
                     }
                 });
