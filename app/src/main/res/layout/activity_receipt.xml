@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".ShowCheckOut">
+    tools:context=".receipt">
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="414dp"
         android:layout_height="405dp"
-        app:layout_constraintBottom_toTopOf="@+id/btncash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,38 +90,26 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.32" />
 
-    <Button
-        android:id="@+id/btncash"
-        android:layout_width="278dp"
+    <TextView
+        android:id="@+id/tvReceiptCode"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="#CA86F3"
-        android:fontFamily="@font/thasadith_bold"
-        android:text="PAY AT COUNTER"
-        app:layout_constraintBottom_toTopOf="@+id/btnonline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
-    <Button
-        android:id="@+id/btnonline"
-        android:layout_width="278dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="#CA86F3"
-        android:fontFamily="@font/thasadith_bold"
-        android:text="ONLINE PAYMENT"
+        android:text="CODE"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btncash" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalPrice"
+        app:layout_constraintVertical_bias="0.118" />
 
     <ImageView
         android:id="@+id/ivLogo9"
@@ -145,7 +132,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="72dp"
         android:fontFamily="@font/thasadith"
-        android:text="YOUR ORDER"
+        android:text="YOUR RECEIPT"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textColorHint="#000000"
@@ -168,5 +155,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="319dp"
+        android:layout_height="53dp"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvReceiptCode" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
