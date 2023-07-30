@@ -39,7 +39,7 @@ import java.time.LocalTime;
 
 
 public class receipt extends AppCompatActivity {
-    String id;
+    String id,payment;
     TextView tvTotalPrice,receiptCode;
     Button save;
 
@@ -55,6 +55,7 @@ public class receipt extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
         ArrayList<MainModal2> cartlist = bundle.getParcelableArrayList("cartlist");
+        payment=bundle.getString("payment");
         double totalCartPrice = calculateTotalPrice(cartlist);
         tvTotalPrice.setText("Total price : RM " + String.format("%.2f", totalCartPrice));
 
@@ -162,6 +163,8 @@ public class receipt extends AppCompatActivity {
 
                     document.add(new Paragraph(receiptCode.getText().toString()));
                     document.add(new Paragraph(tvTotalPrice.getText().toString()));
+
+                    document.add(new Paragraph("Payment:" + payment));
 
                     document.add(new Paragraph("Date:" + date));
 

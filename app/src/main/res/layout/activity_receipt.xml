@@ -7,97 +7,11 @@
     android:background="@drawable/background"
     tools:context=".receipt">
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/black"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
-    <ImageView
-        android:id="@+id/ivLogo9"
-        android:layout_width="296dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logopsp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/view4"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="72dp"
-        android:fontFamily="@font/thasadith"
-        android:text="YOUR RECEIPT"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="120dp"
-        android:background="#CA86F3"
-        app:layout_anchorGravity="bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="319dp"
-        android:layout_height="53dp"
-        android:text="SAVE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvReceiptCode"
-        app:layout_constraintVertical_bias="0.155" />
-
-    <TextView
-        android:id="@+id/tvReceiptCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CODE"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTotalPrice"
-        app:layout_constraintVertical_bias="0.0" />
-
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="405dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -165,6 +79,7 @@
         </LinearLayout>
     </ScrollView>
 
+
     <TextView
         android:id="@+id/tvTotalPrice"
         android:layout_width="match_parent"
@@ -176,9 +91,81 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.32" />
+
+    <TextView
+        android:id="@+id/tvReceiptCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CODE"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalPrice"
+        app:layout_constraintVertical_bias="0.118" />
+
+    <ImageView
+        android:id="@+id/ivLogo9"
+        android:layout_width="296dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logopsp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/view4"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/thasadith"
+        android:text="YOUR RECEIPT"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="120dp"
+        android:background="#CA86F3"
+        app:layout_anchorGravity="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="319dp"
+        android:layout_height="53dp"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvReceiptCode" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

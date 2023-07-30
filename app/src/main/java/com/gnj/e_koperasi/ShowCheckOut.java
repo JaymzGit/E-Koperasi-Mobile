@@ -116,6 +116,19 @@ public class ShowCheckOut extends AppCompatActivity {
                 Bundle receipt = new Bundle();
                 receipt.putString("id",id);
                 Receipt.putExtra("cartlist", cartlist);
+                Receipt.putExtra("payment", "Cash Payment");
+                startActivity(Receipt);
+
+            }
+        });
+        online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Receipt = new Intent(getApplicationContext(),receipt.class);
+                Bundle receipt = new Bundle();
+                receipt.putString("id",id);
+                Receipt.putExtra("cartlist", cartlist);
+                Receipt.putExtra("payment", "Online Payment");
                 startActivity(Receipt);
             }
         });
