@@ -9,7 +9,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="405dp"
         app:layout_constraintBottom_toTopOf="@+id/btncash"
         app:layout_constraintEnd_toEndOf="parent"
