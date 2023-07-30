@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class HistoryPage extends AppCompatActivity {
     String id;
@@ -55,30 +57,67 @@ public class HistoryPage extends AppCompatActivity {
                             String customerId = orderSnapshot.child("customer_id").getValue(String.class);
                             if (customerId != null && customerId.equals(id)) {
                                 // This order belongs to the current customer, add it to the historyList
-                                String price = orderSnapshot.child("total_price").getValue(String.class);
+                                double price = orderSnapshot.child("total_price").getValue(double.class);
                                 String date = orderSnapshot.child("date").getValue(String.class);
-                                String purchase = orderSnapshot.child("purchase").getValue(String.class);
-                                History history = new History(price, date, purchase);
+                                String time = orderSnapshot.child("time").getValue(String.class);
+
+                                StringBuilder purchase = new StringBuilder();
+                                DataSnapshot cartListSnapshot = orderSnapshot.child("cartList");
+                                int itemCount = 0;
+                                HashMap<String, Integer> itemQuantities = new HashMap<>();
+
+                                for (DataSnapshot cartItemSnapshot : cartListSnapshot.getChildren()) {
+                                    String itemName = cartItemSnapshot.child("item_name").getValue(String.class);
+                                    int itemQuantity = cartItemSnapshot.child("item_quantity").getValue(Integer.class);
+
+                                    // Keep track of unique item names and their quantities
+                                    if (itemName != null) {
+                                        if (itemQuantities.containsKey(itemName)) {
+                                            itemQuantities.put(itemName, itemQuantities.get(itemName) + itemQuantity);
+                                        } else {
+                                            itemQuantities.put(itemName, itemQuantity);
+                                        }
+                                    }
+                                }
+
+                                // Append the item names and quantities to the purchase string
+                                for (Map.Entry<String, Integer> entry : itemQuantities.entrySet()) {
+                                    String itemName = entry.getKey();
+                                    int itemQuantity = entry.getValue();
+
+                                    if (itemCount > 0) {
+                                        purchase.append(", ");
+                                    }
+
+                                    if (itemQuantity == 1) {
+                                        purchase.append(itemName);
+                                    } else {
+                                        purchase.append(itemName + " x" + itemQuantity);
+                                    }
+
+                                    itemCount++;
+                                }
+
+                                History history = new History(price, date, time, purchase.toString());
                                 historyList.add(history);
                             }
                         }
                         // Sort the historyList based on the date (latest date on top)
                         Collections.sort(historyList, new Comparator<History>() {
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                            SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
                             @Override
                             public int compare(History h1, History h2) {
                                 try {
-                                    Date date1 = dateFormat.parse(h1.getDate());
-                                    Date date2 = dateFormat.parse(h2.getDate());
-                                    return date2.compareTo(date1); // For descending order (latest date on top)
+                                    Date date1 = dateTimeFormat.parse(h1.getDate() + " " + h1.getTime());
+                                    Date date2 = dateTimeFormat.parse(h2.getDate() + " " + h2.getTime());
+                                    return date2.compareTo(date1); // For descending order (latest date and time on top)
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                     return 0;
                                 }
                             }
                         });
-
                         historyAdapter.notifyDataSetChanged();
                     }
 
@@ -138,7 +177,7 @@ public class HistoryPage extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent back = new Intent(getApplicationContext(), Catalog.class);
+        Intent back = new Intent(getApplicationContext(), Setting.class);
         Bundle info = new Bundle();
         info.putString("id",id);
         back.putExtras(info);

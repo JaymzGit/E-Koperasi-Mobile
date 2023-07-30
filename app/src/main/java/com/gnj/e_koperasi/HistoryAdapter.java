@@ -38,6 +38,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     static class HistoryViewHolder extends RecyclerView.ViewHolder {
         private TextView tvPrice;
         private TextView tvDate;
+        private TextView tvPurchaseTime;
         private TextView tvPurchase;
 
         public HistoryViewHolder(@NonNull View itemView) {
@@ -45,16 +46,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             tvPrice = itemView.findViewById(R.id.price);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvPurchase = itemView.findViewById(R.id.name);
+            tvPurchaseTime = itemView.findViewById(R.id.tvPurchaseTime);
         }
 
         public void bind(History history) {
             String purchaseText = history.getPurchase();
-            if (purchaseText.length() > 50) {
-                purchaseText = purchaseText.substring(0, 50) + "...";
+            if (purchaseText.length() > 33) {
+                purchaseText = purchaseText.substring(0, 34) + "...";
             }
             tvPurchase.setText(purchaseText);
-            tvPrice.setText("-" + history.getPrice());
+            tvPrice.setText("-RM " + history.getPrice() + "0");
             tvDate.setText(history.getDate());
+            tvPurchaseTime.setText(history.getTime());
         }
     }
 }
