@@ -1,32 +1,36 @@
 package com.gnj.e_koperasi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import com.google.gson.Gson;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class ShowCheckOut extends AppCompatActivity {
     String id;
     Button cash,online;
     TextView tvTotalPrice;
+    double totalCartPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +40,31 @@ public class ShowCheckOut extends AppCompatActivity {
         cash = findViewById(R.id.btncash);
         online = findViewById(R.id.btnonline);
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseRef = database.getReference("orders");
+
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
         ArrayList<MainModal2> cartlist = bundle.getParcelableArrayList("cartlist");
-        double totalCartPrice = calculateTotalPrice(cartlist);
+        totalCartPrice = calculateTotalPrice(cartlist);
         tvTotalPrice.setText("Total price : RM " + String.format("%.2f", totalCartPrice));
 
+        Gson gson = new Gson();
+        String cartListJson = gson.toJson(cartlist);
+        String currentDate = getCurrentDate();
+        String currentTime = getCurrentTime();
+
+        // Convert cartlist to ArrayList<OrderItem>
+        ArrayList<OrderItem> orderItems = new ArrayList<>();
+        for (MainModal2 item : cartlist) {
+            OrderItem orderItem = new OrderItem(item.getItem_name(), item.getQuantity(), item.getItem_price());
+            orderItems.add(orderItem);
+        }
 
         for (MainModal2 item : cartlist) {
             TableLayout tableLayout = findViewById(R.id.table);
             // Create a new TableRow
             TableRow row = new TableRow(this);
-
 
             // Create TextViews for each column and set their properties
             TextView itemNameTextView = createTextView(item.getItem_name());
@@ -74,8 +91,6 @@ public class ShowCheckOut extends AppCompatActivity {
             totalprice.setTextColor(Color.WHITE);
             row.addView(totalprice);
 
-
-
             // Add the TableRow to the TableLayout
             tableLayout.addView(row);
         }
@@ -83,12 +98,48 @@ public class ShowCheckOut extends AppCompatActivity {
         cash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String key = databaseRef.push().getKey();
+                String payment_method = "Cash/Other";
+                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method);
+                databaseRef.child(key).setValue(insertdata).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //toast
+                        } else {
+                            //
+                        }
+                    }
+                });
+
                 Intent Receipt = new Intent(getApplicationContext(),receipt.class);
                 Bundle receipt = new Bundle();
                 receipt.putString("id",id);
                 Receipt.putExtra("cartlist", cartlist);
                 startActivity(Receipt);
+            }
+        });
 
+        online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = databaseRef.push().getKey();
+                String payment_method = "Online Payment";
+                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method);
+                databaseRef.child(key).setValue(insertdata).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //toast
+                        }
+                    }
+                });
+
+                Intent payment = new Intent(getApplicationContext(), Payment.class);
+                Bundle data = new Bundle();
+                data.putString("id",id);
+                payment.putExtras(data);
+                startActivity(payment);
             }
         });
     }
@@ -101,7 +152,6 @@ public class ShowCheckOut extends AppCompatActivity {
         textView.setPadding(16, 8, 16, 8);
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-
         return textView;
     }
     private double calculateTotalPrice(ArrayList<MainModal2> cartlist) {
@@ -112,10 +162,6 @@ public class ShowCheckOut extends AppCompatActivity {
         return totalPrice;
     }
 
-
-
-
-
     @Override
     public void onBackPressed() {
         Intent back = new Intent(getApplicationContext(), Cart.class);
@@ -124,7 +170,20 @@ public class ShowCheckOut extends AppCompatActivity {
         back.putExtras(info);
         startActivity(back);
         super.onBackPressed();
+
+        setResult(RESULT_CANCELED);
+        finish(); // Finish the activity and return to Cart
     }
 
+    private String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = Calendar.getInstance().getTime();
+        return dateFormat.format(currentDate);
+    }
 
+    private String getCurrentTime() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        Date currentTime = Calendar.getInstance().getTime();
+        return timeFormat.format(currentTime);
+    }
 }

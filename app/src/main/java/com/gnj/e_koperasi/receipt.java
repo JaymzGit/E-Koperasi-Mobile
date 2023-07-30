@@ -2,6 +2,7 @@ package com.gnj.e_koperasi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -221,5 +222,15 @@ public class receipt extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(getApplicationContext(), Cart.class);
+        Bundle info = new Bundle();
+        info.putString("id",id);
+        back.putExtras(info);
+        startActivity(back);
+        super.onBackPressed();
     }
 }
