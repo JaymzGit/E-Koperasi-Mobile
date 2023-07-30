@@ -170,19 +170,15 @@ public class PasswordChange extends AppCompatActivity {
         }
     @Override
     public void onBackPressed() {
-        Intent back = new Intent(getApplicationContext(), Setting.class);
-        Bundle info = new Bundle();
-        info.putString("id",id);
-        back.putExtras(info);
-        startActivity(back);
+        if(frompage.equals("OTP")){
         super.onBackPressed();
-    }
-
-    public void onResume() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem item = menu.findItem(R.id.setting);
-        item.setChecked(true);
-        super.onResume();
+        }else {
+            Intent back = new Intent(getApplicationContext(), Setting.class);
+            Bundle info = new Bundle();
+            info.putString("id",id);
+            back.putExtras(info);
+            startActivity(back);
+            super.onBackPressed();
+            }
     }
 }
