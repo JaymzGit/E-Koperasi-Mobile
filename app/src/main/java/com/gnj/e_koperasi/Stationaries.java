@@ -63,7 +63,7 @@ public class Stationaries extends AppCompatActivity {
                 itemlist.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     MainModal mainModal = dataSnapshot.getValue(MainModal.class);
-                    if (mainModal != null && "other".equals(mainModal.getItem_category())) {
+                    if (mainModal != null && "stationaries".equals(mainModal.getItem_category())) {
                         itemlist.add(mainModal);
                     }
                 }
