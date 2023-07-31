@@ -9,18 +9,20 @@ public class Order {
     private String time;
     private double total_price;
     private String payment_method;
+    private String status;
 
     public Order() {
         // Default constructor required for Firebase
     }
 
-    public Order(String customer_id, ArrayList<OrderItem> cartList, String date, String time, double total_price, String payment_method) {
+    public Order(String customer_id, ArrayList<OrderItem> cartList, String date, String time, double total_price, String payment_method, String status) {
         this.customer_id = customer_id;
         this.cartList = cartList;
         this.date = date;
         this.time = time;
         this.total_price = total_price;
         this.payment_method = payment_method;
+        this.status = status;
     }
 
     // Add getters and setters for customer_id, date, total_price, and payment_method
@@ -71,5 +73,13 @@ public class Order {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

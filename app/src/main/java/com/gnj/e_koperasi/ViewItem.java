@@ -2,8 +2,10 @@ package com.gnj.e_koperasi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,8 +25,10 @@ public class ViewItem extends AppCompatActivity {
     TextView name,price,quantity;
     Button add,minus,cart;
     int itemNum = 1;
-    String itemName,imageUrl;
+    String itemName,imageUrl, itemQuantity;
     double itemPrice;
+    private Handler handler = new Handler();
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class ViewItem extends AppCompatActivity {
             itemName = bundle.getString("itemName");
             itemPrice = bundle.getDouble("itemPrice");
             imageUrl = bundle.getString("itemImage");
+            itemQuantity = bundle.getString("itemQuantity");
 
             name.setText(itemName);
             price.setText("RM " + String.valueOf(itemPrice) + "0");
@@ -55,30 +60,43 @@ public class ViewItem extends AppCompatActivity {
                     .into(image);
         }
 
-        add.setOnClickListener(new View.OnClickListener() {
+        add.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                itemNum +=1;
-                if(itemNum<1){
-                    itemNum = 1;
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    increaseQuantity();
+                    handler.postDelayed(runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            increaseQuantity();
+                            handler.postDelayed(this, 100); // Adjust the delay here (200ms)
+                        }
+                    }, 500); // Adjust the initial delay here (500ms)
+                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    handler.removeCallbacks(runnable);
                 }
-                quantity.setText(String.valueOf(itemNum));
-
+                return false;
             }
         });
 
-        minus.setOnClickListener(new View.OnClickListener() {
+        minus.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                itemNum -=1;
-                if(itemNum<1){
-                    itemNum = 1;
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    decreaseQuantity();
+                    handler.postDelayed(runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            decreaseQuantity();
+                            handler.postDelayed(this, 100); // Adjust the delay here (200ms)
+                        }
+                    }, 500); // Adjust the initial delay here (500ms)
+                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    handler.removeCallbacks(runnable);
                 }
-                quantity.setText(String.valueOf(itemNum));
-
+                return false;
             }
         });
-
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +144,7 @@ public class ViewItem extends AppCompatActivity {
                 finish();
             }
         });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem item = menu.findItem(R.id.catelog);
@@ -169,6 +188,27 @@ public class ViewItem extends AppCompatActivity {
             }
         });
     }
+    private void increaseQuantity() {
+        int availableQuantity = Integer.parseInt(itemQuantity);
+        itemNum += 1;
+        if (itemNum > availableQuantity) {
+            itemNum = availableQuantity; // Limit to available stock
+        }
+        quantity.setText(String.valueOf(itemNum));
+    }
+
+    private void decreaseQuantity() {
+        int availableQuantity = Integer.parseInt(itemQuantity);
+        itemNum -= 1;
+        if (itemNum < 1) {
+            itemNum = 1; // Minimum quantity should be 1
+        }
+        if (itemNum > availableQuantity) {
+            itemNum = availableQuantity; // Limit to available stock
+        }
+        quantity.setText(String.valueOf(itemNum));
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -43,7 +43,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartList"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="507dp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"
         app:layout_constraintBottom_toTopOf="@+id/totalPrice"
@@ -75,20 +75,20 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintHorizontal_bias="0.84"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.91" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="125dp"
-        android:layout_height="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
         android:backgroundTint="#CA86F3"
         android:text="CHECK OUT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintHorizontal_bias="0.942"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.918" />

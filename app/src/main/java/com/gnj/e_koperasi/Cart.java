@@ -74,6 +74,8 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                         Checkout.putExtras(checkout);
                         Checkout.putExtra("cartlist", cartlist);
                         startActivity(Checkout);
+                        cartlist.clear(); // Clear the cart list
+                        myAdapter.notifyDataSetChanged(); // Notify the adapter about the change
                     }
                 });
             }
@@ -116,11 +118,6 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
-                        Bundle cart = new Bundle();
-                        cart.putString("id",id);
-                        Cart.putExtras(cart);
-                        startActivity(Cart);
                         return true;
                     case R.id.setting:
                         Intent Settings = new Intent(getApplicationContext(),Setting.class);
@@ -153,6 +150,13 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         MenuItem item = menu.findItem(R.id.cart);
         item.setChecked(true);
         super.onResume();
+
+        // Check if the 'clear' flag is set to true
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getBoolean("clear", false)) {
+            cartlist.clear(); // Clear the cart list
+            myAdapter.notifyDataSetChanged(); // Notify the adapter about the change
+        }
 
         // Update the total cart price
         myAdapter.calculateTotalCartPrice();

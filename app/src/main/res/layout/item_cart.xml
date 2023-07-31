@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:paddingLeft="8dp"
     android:paddingTop="8dp"
-    android:paddingRight="52dp"
+    android:paddingRight="8dp"
     android:paddingBottom="8dp">
 
     <ImageView
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/thasadith_bold"
-                android:text="RM"
+                android:text="RM "
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
@@ -129,7 +129,7 @@
                 android:fontFamily="@font/thasadith_bold"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

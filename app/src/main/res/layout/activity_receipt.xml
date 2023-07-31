@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".receipt">
+    tools:context=".Receipt">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -95,7 +95,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="405dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"

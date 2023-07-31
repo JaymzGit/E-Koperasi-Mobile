@@ -10,9 +10,8 @@
 
     <TextView
         android:id="@+id/tv_alert_message"
-        android:layout_width="366dp"
+        android:layout_width="369dp"
         android:layout_height="46dp"
-        android:layout_marginTop="5dp"
         android:fontFamily="@font/thasadith_bold"
         android:gravity="center"
         android:paddingStart="20dp"
@@ -20,11 +19,12 @@
         android:paddingEnd="20dp"
         android:text="Are you sure you want to log out?"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
 
     <Button
         android:id="@+id/confirm_no_logout_button"
@@ -34,7 +34,7 @@
         android:layout_marginRight="80dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
-        android:padding="10dp"
+        android:padding="8dp"
         android:text="NO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirm_yes_logout_button"
@@ -48,7 +48,7 @@
         android:layout_marginTop="12dp"
         android:backgroundTint="#CA86F3"
         android:fontFamily="@font/thasadith_bold"
-        android:padding="10dp"
+        android:padding="8dp"
         android:text="YES"
         app:layout_constraintEnd_toStartOf="@id/confirm_no_logout_button"
         app:layout_constraintStart_toStartOf="parent"

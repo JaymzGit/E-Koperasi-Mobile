@@ -1,18 +1,19 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingLeft="12dp"
+    android:paddingTop="12dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="12dp">
 
     <!-- Purchase Group Summary -->
 
     <LinearLayout
+        android:id="@+id/summaryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <!-- Spacer View to push the button to the right side -->
         <TextView
@@ -37,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/thasadith_bold"
+            android:paddingRight="35dp"
             android:text="-RM3.50"
             android:textColor="#FF0000"
             android:textSize="18sp" />
@@ -45,9 +47,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/summaryLayout"
         android:orientation="horizontal">
-
 
         <!-- Spacer View to push the button to the right side -->
 
@@ -64,7 +66,7 @@
 
         <TextView
             android:id="@+id/tvPurchaseTime"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/thasadith_bold"
@@ -74,8 +76,14 @@
 
     </LinearLayout>
 
-    <!-- Purchase Date -->
+    <!-- Arrow positioned between the two lines towards the right side -->
+    <ImageButton
+        android:id="@+id/btnDelete3"
+        android:layout_width="26dp"
+        android:layout_height="23dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/arrow"
+        android:backgroundTint="#FFFFFF" />
 
-    <!-- Total Price -->
-
-</LinearLayout>
+</RelativeLayout>

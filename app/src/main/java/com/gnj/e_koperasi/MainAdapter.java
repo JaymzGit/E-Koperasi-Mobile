@@ -46,6 +46,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
                 .into(holder.item_image);
         holder.item_name.setText(mainModal.getItem_name());
         holder.item_price.setText(String.valueOf(mainModal.getItem_price()) + "0");
+        holder.item_quantity.setText("Qty: " + String.valueOf(mainModal.getItem_quantity()));
     }
 
     @Override
@@ -55,7 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView item_image;
-        TextView item_name, item_price;
+        TextView item_name, item_price, item_quantity;
         ArrayList<MainModal> itemlist;
         String id;
 
@@ -68,6 +69,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             item_image = itemView.findViewById(R.id.itemImage);
             item_name = itemView.findViewById(R.id.name);
             item_price = itemView.findViewById(R.id.price);
+            item_quantity = itemView.findViewById(R.id.quantity);
 
             itemView.setOnClickListener(this);
         }
@@ -80,12 +82,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
                 String itemName = mainModal.getItem_name();
                 double itemPrice = mainModal.getItem_price();
                 String itemImage = mainModal.getItem_image();
+                String itemQuantity = String.valueOf(mainModal.getItem_quantity());
 
                 Intent i = new Intent(v.getContext(), ViewItem.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("itemName", itemName);
                 bundle.putDouble("itemPrice", itemPrice);
                 bundle.putString("itemImage", itemImage);
+                bundle.putString("itemQuantity", itemQuantity);
                 bundle.putString("id", id); // Use the id from the class member variable
                 i.putExtras(bundle);
                 v.getContext().startActivity(i);

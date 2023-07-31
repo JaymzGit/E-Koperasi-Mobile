@@ -5,19 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.graphics.Color;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class ShowCheckOut extends AppCompatActivity {
     Button cash,online;
     TextView tvTotalPrice;
     double totalCartPrice;
+    private String latestOrderId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +103,10 @@ public class ShowCheckOut extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String key = databaseRef.push().getKey();
+                latestOrderId = key;
+                String status = "Pending";
                 String payment_method = "Cash/Other";
-                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method);
+                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method, status);
                 databaseRef.child(key).setValue(insertdata).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -112,23 +118,13 @@ public class ShowCheckOut extends AppCompatActivity {
                     }
                 });
 
-                Intent Receipt = new Intent(getApplicationContext(),receipt.class);
+                Intent Receipt = new Intent(getApplicationContext(), com.gnj.e_koperasi.Receipt.class);
                 Bundle receipt = new Bundle();
                 receipt.putString("id",id);
+                receipt.putString("latestOrderId", latestOrderId);
+                Receipt.putExtras(receipt);
                 Receipt.putExtra("cartlist", cartlist);
                 Receipt.putExtra("payment", "Cash Payment");
-                startActivity(Receipt);
-
-            }
-        });
-        online.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Receipt = new Intent(getApplicationContext(),receipt.class);
-                Bundle receipt = new Bundle();
-                receipt.putString("id",id);
-                Receipt.putExtra("cartlist", cartlist);
-                Receipt.putExtra("payment", "Online Payment");
                 startActivity(Receipt);
             }
         });
@@ -137,8 +133,10 @@ public class ShowCheckOut extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String key = databaseRef.push().getKey();
+                String status = "Pending";
+                latestOrderId = key;
                 String payment_method = "Online Payment";
-                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method);
+                Order insertdata = new Order(id, orderItems, currentDate, currentTime, totalCartPrice, payment_method, status);
                 databaseRef.child(key).setValue(insertdata).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -151,8 +149,51 @@ public class ShowCheckOut extends AppCompatActivity {
                 Intent payment = new Intent(getApplicationContext(), Payment.class);
                 Bundle data = new Bundle();
                 data.putString("id",id);
+                data.putString("latestOrderId", latestOrderId);
                 payment.putExtras(data);
                 startActivity(payment);
+            }
+        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.cart);
+        item.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.catelog:
+                        Intent MainPage = new Intent(getApplicationContext(), Catalog.class);
+                        Bundle main = new Bundle();
+                        main.putString("id",id);
+                        MainPage.putExtras(main);
+                        startActivity(MainPage);
+                        return true;
+                    case R.id.announcements:
+                        Intent Announcements = new Intent(getApplicationContext(), Announcements.class);
+                        Bundle announce = new Bundle();
+                        announce.putString("id",id);
+                        Announcements.putExtras(announce);
+                        startActivity(Announcements);
+                        return true;
+                    case R.id.scan:
+                        Intent ScanItems = new Intent(getApplicationContext(), ScanItems.class);
+                        Bundle scan = new Bundle();
+                        scan.putString("id",id);
+                        ScanItems.putExtras(scan);
+                        startActivity(ScanItems);
+                        return true;
+                    case R.id.cart:
+                        return true;
+                    case R.id.setting:
+                        Intent Settings = new Intent(getApplicationContext(),Setting.class);
+                        Bundle setting = new Bundle();
+                        setting.putString("id",id);
+                        Settings.putExtras(setting);
+                        startActivity(Settings);
+                        return true;
+                }
+                return false;
             }
         });
     }

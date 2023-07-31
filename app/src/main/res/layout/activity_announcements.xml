@@ -9,7 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/announcementRecycler"
-        android:layout_width="410dp"
+        android:layout_width="match_parent"
         android:layout_height="618dp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"

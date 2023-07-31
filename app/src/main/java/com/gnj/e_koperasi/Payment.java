@@ -2,43 +2,216 @@ package com.gnj.e_koperasi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-
 public class Payment extends AppCompatActivity {
-
-    DatabaseReference userRef;
-    String id; // Replace this with the user ID you want to query for
-    String userEmail, userName, userPhone;
+    String id, latestOrderId;
     WebView webView;
+    boolean isPaymentDone = false;
+    DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Bundle bundle = getIntent().getExtras();
-        id = bundle.getString("id");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            id = bundle.getString("id");
+            latestOrderId = bundle.getString("latestOrderId");
+        }
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("orders");
+
         webView = findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript if required
-        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // Do nothing here
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!url.contains("check.php") && !url.contains("payment.php") && url.contains("bill")) {
+                    // Load the URL and extract the payment status from the HTML content
+                    view.loadUrl(url);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                if (url.contains("bill")) {
+                    // Extract the payment status from the WebView content
+                    view.evaluateJavascript("(function() { " +
+                            "   var h5Elements = document.getElementsByTagName('h5'); " +
+                            "   for (var i = 0; i < h5Elements.length; i++) { " +
+                            "       if (h5Elements[i].innerText.includes('Status :')) { " +
+                            "           var nextElement = h5Elements[i].nextElementSibling; " +
+                            "           if (nextElement.tagName === 'STRONG') { " +
+                            "               return nextElement.innerText.trim(); " +
+                            "           } " +
+                            "       } " +
+                            "   } " +
+                            "   return 'Payment Unsuccessful'; " +
+                            "})()", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+                            String paymentStatus = value.replaceAll("\"", "").trim();
+                            Log.d("PaymentStatus", "Received status: " + paymentStatus);
+                            if (paymentStatus.equalsIgnoreCase("Payment Approved")) {
+                                // Handle the case when the payment is successful
+                                isPaymentDone = true;
+                                databaseRef.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                            String latestOrderId = dataSnapshot.getKey();
+                                            updateOrderStatusToCompleted(latestOrderId);
+                                            break;
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle the error if needed
+                                    }
+                                });
+                                Log.d("PaymentStatus", paymentStatus);
+                            } else {
+                                if (latestOrderId != null && !latestOrderId.isEmpty()) {
+                                    databaseRef.child(latestOrderId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // Order deleted successfully, show a toast or perform any other action
+                                            } else {
+                                                // Failed to delete order, handle the error if needed
+                                            }
+                                        }
+                                    });
+                                }
+
+                                Log.d("PaymentStatus", paymentStatus);
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         String websiteUrl = "http://ekoop.000webhostapp.com/check.php?id=" + id;
         webView.loadUrl(websiteUrl);
+    }
+
+    // Method to update the order status to "Completed" and update item quantities
+    private void updateOrderStatusToCompleted(String orderId) {
+        String status = "Completed";
+        databaseRef.child(orderId).child("status").setValue(status)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Order status updated successfully, now update item quantities
+                            databaseRef.child(orderId).child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot cartItemSnapshot : snapshot.getChildren()) {
+                                        String item_name = cartItemSnapshot.child("item_name").getValue(String.class);
+                                        int item_quantity = cartItemSnapshot.child("item_quantity").getValue(Integer.class);
+                                        updateItemQuantityInCollection(item_name, item_quantity);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Handle the error if needed
+                                }
+                            });
+                        } else {
+                            // Failed to update order status, handle the error if needed
+                        }
+                    }
+                });
+    }
+
+    // Method to update item quantity in the item collection
+    private void updateItemQuantityInCollection(String itemName, int itemQuantity) {
+        DatabaseReference itemRef = FirebaseDatabase.getInstance().getReference("item");
+        itemRef.orderByChild("item_name").equalTo(itemName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                    // Assuming the item_quantity is stored as an integer in the item collection
+                    int currentQuantity = itemSnapshot.child("item_quantity").getValue(Integer.class);
+                    int updatedQuantity = currentQuantity - itemQuantity;
+                    itemSnapshot.getRef().child("item_quantity").setValue(updatedQuantity)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // Item quantity updated successfully, show a toast or perform any other action
+                                    } else {
+                                        // Failed to update item quantity, handle the error if needed
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error if needed
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isPaymentDone) {
+            // If payment is done, handle the back button as needed, e.g., go back to the previous activity
+            Intent intent = new Intent(Payment.this, Cart.class);
+            Bundle info = new Bundle();
+            info.putString("id", id);
+            intent.putExtras(info);
+            startActivity(intent);
+            super.onBackPressed();
+        } else {
+            if (latestOrderId != null && !latestOrderId.isEmpty()) {
+                databaseRef.child(latestOrderId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Order deleted successfully, show a toast or perform any other action
+                        } else {
+                            // Failed to delete order, handle the error if needed
+                        }
+                    }
+                });
+            }
+
+            // Redirect the user to the Cart activity
+            Intent intent = new Intent(Payment.this, Cart.class);
+            Bundle info = new Bundle();
+            info.putString("id", id);
+            intent.putExtras(info);
+            startActivity(intent);
+        }
     }
 }

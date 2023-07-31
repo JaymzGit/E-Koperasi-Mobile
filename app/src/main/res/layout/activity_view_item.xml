@@ -70,8 +70,8 @@
 
     <ImageView
         android:id="@+id/itemImage"
-        android:layout_width="225dp"
-        android:layout_height="214dp"
+        android:layout_width="205dp"
+        android:layout_height="185dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:src="@mipmap/ic_launcher"
@@ -79,7 +79,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215" />
+        app:layout_constraintVertical_bias="0.245" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:fontFamily="@font/thasadith_bold"
+        android:text="Tam Tam"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemImage"
+        app:layout_constraintVertical_bias="0.043" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:fontFamily="@font/thasadith_bold"
+        android:text="RM 3.50"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemImage"
+        app:layout_constraintVertical_bias="0.136" />
 
     <TextView
         android:id="@+id/textView"
@@ -96,7 +128,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <LinearLayout
         android:id="@+id/quantityLayout"
@@ -105,9 +137,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price"
-        app:layout_constraintVertical_bias="0.186">
+        app:layout_constraintVertical_bias="0.267">
 
         <Button
             android:id="@+id/btnMinus"
@@ -124,13 +157,14 @@
 
         <TextView
             android:id="@+id/tvNum"
-            android:layout_width="19dp"
+            android:layout_width="wrap_content"
             android:layout_height="33dp"
             android:layout_marginLeft="5dp"
             android:fontFamily="sans-serif"
+            android:gravity="center"
             android:text="1"
             android:textColor="#FFFFFF"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnAdd"
@@ -139,6 +173,7 @@
             android:layout_marginBottom="10dp"
             android:background="@null"
             android:fontFamily="@font/thasadith_bold"
+            android:paddingLeft="8dp"
             android:text="+"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -150,46 +185,15 @@
         android:id="@+id/btnCart"
         android:layout_width="292dp"
         android:layout_height="49dp"
+        android:layout_marginBottom="51dp"
         android:background="@drawable/button"
         android:backgroundTint="#CA86F3"
         android:text="ADD TO CART"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.799" />
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="31dp"
-        android:fontFamily="@font/thasadith_bold"
-        android:text="Tam Tam"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemImage"
-        app:layout_constraintVertical_bias="0.032" />
-
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:fontFamily="@font/thasadith_bold"
-        android:text="RM 3.50"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemImage"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
