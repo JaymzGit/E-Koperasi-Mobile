@@ -93,6 +93,8 @@ public class Payment extends AppCompatActivity {
                                     }
                                 });
 
+                                updateOrderStatusToCompleted(latestOrderId);
+
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -132,6 +134,7 @@ public class Payment extends AppCompatActivity {
                                             info.putString("id", id);
                                             mainIntent.putExtras(info);
                                             startActivity(mainIntent);
+                                            Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();
                                             finish();
                                         }
                                     }
@@ -225,7 +228,7 @@ public class Payment extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // Order deleted successfully, show a toast or perform any other action
+                            //If successful
                         } else {
                             // Failed to delete order, handle the error if needed
                         }
@@ -240,6 +243,7 @@ public class Payment extends AppCompatActivity {
             info.putString("id", id);
             mainIntent.putExtras(info);
             startActivity(mainIntent);
+            Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();
             finish();
         }
     }
