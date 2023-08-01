@@ -2,7 +2,6 @@ package com.gnj.e_koperasi.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -128,9 +127,7 @@ public class ClassificationResultAdapter
         public void bind(Category category, HashMap<String, String> labelMap) {
             if (category != null) {
                 String categoryLabel = category.getLabel();
-                Log.d("ClassificationResult", "Category Label: " + categoryLabel);
                 String itemText = labelMap.get(categoryLabel);
-                Log.d("ClassificationResult", "Category Text: " + itemText);
 
 
                 Query query = itemsRef.orderByChild("item_name").equalTo(itemText);

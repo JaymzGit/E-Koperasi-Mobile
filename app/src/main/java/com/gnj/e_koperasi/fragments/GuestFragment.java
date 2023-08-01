@@ -1,7 +1,6 @@
 package com.gnj.e_koperasi.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,7 +14,6 @@ import android.widget.Button;
 import com.gnj.e_koperasi.AboutUs;
 import com.gnj.e_koperasi.MainActivity;
 import com.gnj.e_koperasi.R;
-import com.gnj.e_koperasi.SharedPrefManager;
 
 public class GuestFragment extends Fragment {
     String id;
@@ -53,8 +51,8 @@ public class GuestFragment extends Fragment {
                 alertDialogBuilder.setView(customLayout);
 
                 // Find the YES and NO buttons in the custom layout
-                Button yesButton = customLayout.findViewById(R.id.confirm_yes_logout_button);
-                Button noButton = customLayout.findViewById(R.id.confirm_no_logout_button);
+                Button yesButton = customLayout.findViewById(R.id.buttonPayAtCounter);
+                Button noButton = customLayout.findViewById(R.id.buttonOnlinePayment);
 
                 yesButton.setOnClickListener(new View.OnClickListener() {
                     @Override

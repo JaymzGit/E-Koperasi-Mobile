@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class MyApplication extends Application {
     private static Intent cartIntent;
     private static Bundle cartBundle;
-    private static ArrayList<MainModal2> cartList;
+    private static ArrayList<MainModal2> cartList = new ArrayList<>();
 
     public static ArrayList<MainModal2> getCartList() {
         return cartList;

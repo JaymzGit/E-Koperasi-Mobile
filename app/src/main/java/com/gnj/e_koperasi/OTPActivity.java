@@ -1,32 +1,41 @@
 package com.gnj.e_koperasi;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
+
 public class OTPActivity extends AppCompatActivity {
     EditText[] otpEditTexts = new EditText[6];
     Button submit;
-    String otp,phone;
+    String otp, phone;
+
+    private int otpResendCount = 0;
+    private Handler otpHandler = new Handler();
+    private static final long OTP_RESEND_DELAY_MS = 60000; // 60 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +54,13 @@ public class OTPActivity extends AppCompatActivity {
         phone = getIntent().getStringExtra("mobile");
 
         setupOtpTextWatchers();
+        setupOtpPasteListener();
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isOtpEmpty()) {
-                    Toast.makeText(OTPActivity.this, "Please enter your OTP.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OTPActivity.this, "Please enter your OTP", Toast.LENGTH_SHORT).show();
                 } else {
                     StringBuilder inputOtpBuilder = new StringBuilder();
 
@@ -61,12 +72,12 @@ public class OTPActivity extends AppCompatActivity {
                     FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Intent intent = new Intent(OTPActivity.this, PasswordChange.class);
                                 intent.putExtra("mobile", phone);
                                 intent.putExtra("frompage", "OTP");
                                 startActivity(intent);
-                            }else{
+                            } else {
                                 Toast.makeText(OTPActivity.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -92,6 +103,41 @@ public class OTPActivity extends AppCompatActivity {
 
             currentEditText.addTextChangedListener(new OtpTextWatcher(currentEditText, nextEditText));
             currentEditText.setOnKeyListener(new OtpKeyListener(currentEditText, (i > 0) ? otpEditTexts[i - 1] : null));
+        }
+    }
+
+    private void setupOtpPasteListener() {
+        for (EditText otpEditText : otpEditTexts) {
+            otpEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        handleClipboardPaste(otpEditText);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    private void handleClipboardPaste(EditText editText) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clipData = clipboard.getPrimaryClip();
+            if (clipData != null && clipData.getItemCount() > 0) {
+                CharSequence clipboardText = clipData.getItemAt(0).coerceToText(this);
+                if (clipboardText != null) {
+                    String otpFromClipboard = clipboardText.toString().trim();
+
+                    if (otpFromClipboard.length() == 6) {
+                        editText.setText(otpFromClipboard);
+                    } else {
+                        // Show an error message if the OTP length is incorrect
+                        Toast.makeText(OTPActivity.this, "Incorrect OTP format.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         }
     }
 
@@ -144,10 +190,35 @@ public class OTPActivity extends AppCompatActivity {
             return false;
         }
 
-
     }
+
     @Override
     public void onBackPressed() {
+        showConfirmationDialog();
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you sure you want to return to the login page?");
+        builder.setPositiveButton("No", (dialog, which) -> {
+            // Do nothing, dismiss the dialog
+        });
+        builder.setNegativeButton("Yes", (dialog, which) -> {
+            navigateToLoginPage();
+        });
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void navigateToLoginPage() {
+        Intent back = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(back);
+        super.onBackPressed();
+    }
+
+    private void navigateToForgotPassword() {
         Intent back = new Intent(getApplicationContext(), ForgotPassword.class);
         startActivity(back);
         super.onBackPressed();

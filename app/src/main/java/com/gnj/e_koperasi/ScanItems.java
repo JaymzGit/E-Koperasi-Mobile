@@ -90,8 +90,8 @@ public class ScanItems extends AppCompatActivity {
             alertDialogBuilder.setView(customLayout);
 
             // Find the YES and NO buttons in the custom layout
-            Button yesButton = customLayout.findViewById(R.id.confirm_yes_logout_button);
-            Button noButton = customLayout.findViewById(R.id.confirm_no_logout_button);
+            Button yesButton = customLayout.findViewById(R.id.buttonPayAtCounter);
+            Button noButton = customLayout.findViewById(R.id.buttonOnlinePayment);
 
             yesButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -48,14 +48,6 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".Receipt"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".ShowCheckOut"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
             android:name=".Stationaries"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

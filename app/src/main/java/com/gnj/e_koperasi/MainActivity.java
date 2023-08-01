@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             // User has already logged in, redirect to ScanItems activity
             Intent intent = new Intent(this, ScanItems.class);
             startActivity(intent);
-            finish(); // Optional, it closes the MainActivity so pressing back won't go back to it
+            finish();
         } else {
 
             setContentView(R.layout.activity_main);

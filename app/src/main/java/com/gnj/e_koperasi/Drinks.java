@@ -72,7 +72,7 @@ public class Drinks extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error if needed
+                Log.d("Database Error", String.valueOf(error));
             }
         });
 

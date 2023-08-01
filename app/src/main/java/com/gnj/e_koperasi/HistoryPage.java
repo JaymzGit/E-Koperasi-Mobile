@@ -30,7 +30,6 @@ import java.util.Map;
 
 public class HistoryPage extends AppCompatActivity {
     String id;
-    boolean appearOnce = true;
     private RecyclerView recyclerViewHistory;
     private HistoryAdapter historyAdapter;
     private List<History> historyList;
@@ -125,7 +124,7 @@ public class HistoryPage extends AppCompatActivity {
                         }
                         // Sort the historyList based on the date (latest date on top)
                         Collections.sort(historyList, new Comparator<History>() {
-                            SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                            SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
 
                             @Override
                             public int compare(History h1, History h2) {

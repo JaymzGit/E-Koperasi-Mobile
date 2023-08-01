@@ -64,9 +64,7 @@ public class PurchaseDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     // ViewHolder for regular purchase details
     static class PurchaseDetailsViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvItemName;
-        private TextView tvItemPrice;
-        private TextView tvItemQuantity;
+        private TextView tvItemName,tvItemPrice, tvItemQuantity;
 
         public PurchaseDetailsViewHolder(@NonNull View itemView) {
             super(itemView);

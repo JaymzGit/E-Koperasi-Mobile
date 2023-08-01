@@ -180,32 +180,6 @@
                 tools:ignore="Lable1For" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="256dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Did not receive an OTP?"
-                android:textColor="#5C5C5C"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/sendotp_again"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="Send code"
-                android:textColor="#636363"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
         <Button
             android:id="@+id/btnSend"
             android:layout_width="234dp"

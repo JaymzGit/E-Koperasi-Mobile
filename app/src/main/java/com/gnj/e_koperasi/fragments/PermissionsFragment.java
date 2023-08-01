@@ -29,16 +29,10 @@ public class PermissionsFragment extends Fragment {
             = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    Toast.makeText(requireContext(),
-                                    "Permission request granted",
-                                    Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(requireContext(), "Permission request granted", Toast.LENGTH_LONG).show();
                     navigateToCamera();
                 } else {
-                    Toast.makeText(requireContext(),
-                                    "Permission request denied",
-                                    Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(requireContext(), "Permission request denied", Toast.LENGTH_LONG).show();
                 }
             });
 

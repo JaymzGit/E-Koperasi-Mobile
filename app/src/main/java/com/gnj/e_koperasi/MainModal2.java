@@ -57,8 +57,6 @@ public class MainModal2 implements Parcelable{
         this.totalPrice = totalPrice;
     }
 
-
-
     protected MainModal2(Parcel in) {
         item_image = in.readString();
         item_name = in.readString();

@@ -3,6 +3,7 @@ package com.gnj.e_koperasi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -171,7 +172,7 @@ public class PasswordChange extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(frompage.equals("OTP")){
-        super.onBackPressed();
+            showConfirmationDialog();
         }else {
             Intent back = new Intent(getApplicationContext(), Setting.class);
             Bundle info = new Bundle();
@@ -180,5 +181,29 @@ public class PasswordChange extends AppCompatActivity {
             startActivity(back);
             super.onBackPressed();
             }
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you sure you want to return to the login page?");
+        builder.setPositiveButton("No", (dialog, which) -> {
+            // Do nothing, dismiss the dialog
+        });
+        builder.setNegativeButton("Yes", (dialog, which) -> {
+            navigateToLoginPage();
+        });
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void navigateToLoginPage() {
+        Intent back = new Intent(getApplicationContext(), MainActivity.class);
+        Bundle info = new Bundle();
+        info.putString("id", id);
+        back.putExtras(info);
+        startActivity(back);
+        super.onBackPressed();
     }
 }

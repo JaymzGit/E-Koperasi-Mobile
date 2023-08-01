@@ -29,6 +29,7 @@ public class ViewHistoryItem extends AppCompatActivity {
     private TextView tvPaymentMethodValue;
     private TextView tvReferenceNo3;
     private TextView tvAdminFeePrice;
+    private TextView tvStatus;
     String id;
 
     @Override
@@ -46,6 +47,7 @@ public class ViewHistoryItem extends AppCompatActivity {
         tvPaymentMethodValue = findViewById(R.id.tvPaymentMethodValue);
         tvReferenceNo3 = findViewById(R.id.tvReferenceNo3);
         tvAdminFeePrice = findViewById(R.id.tvadminFeePrice);
+        tvStatus = findViewById(R.id.tvStatus);
 
         // Initialize the RecyclerView and its adapter for displaying purchase details
         RecyclerView purchaseDetailsRecyclerView = findViewById(R.id.purchaseDetailsRecyclerView);
@@ -65,6 +67,7 @@ public class ViewHistoryItem extends AppCompatActivity {
                         String date = dataSnapshot.child("date").getValue(String.class);
                         String time = dataSnapshot.child("time").getValue(String.class);
                         String payment_method = dataSnapshot.child("payment_method").getValue(String.class);
+                        String status = dataSnapshot.child("status").getValue(String.class);
                         String reference_no = orderSnapshotKey;
                         id = dataSnapshot.child("customer_id").getValue(String.class);
 
@@ -80,6 +83,7 @@ public class ViewHistoryItem extends AppCompatActivity {
                         }
                         tvPrice.setText("-RM " + price + "0");
                         tvReferenceNo3.setText(reference_no);
+                        tvStatus.setText(status);
 
                         // Get the cartList snapshot
                         DataSnapshot cartListSnapshot = dataSnapshot.child("cartList");
@@ -138,7 +142,7 @@ public class ViewHistoryItem extends AppCompatActivity {
                         startActivity(ScanItems);
                         return true;
                     case R.id.cart:
-                        Intent Cart = new Intent(getApplicationContext(), com.gnj.e_koperasi.Cart.class);
+                        Intent Cart = new Intent(getApplicationContext(), Cart.class);
                         Bundle cart = new Bundle();
                         cart.putString("id",id);
                         Cart.putExtras(cart);
@@ -154,12 +158,24 @@ public class ViewHistoryItem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // If payment is done, handle the back button as needed, e.g., go back to the previous activity
-        Intent intent = new Intent(ViewHistoryItem.this, HistoryPage.class);
-        Bundle info = new Bundle();
-        info.putString("id", id);
-        intent.putExtras(info);
-        startActivity(intent);
+        Bundle bundle = getIntent().getExtras();
+        String frompage = bundle.getString("frompage");
+        if ("Cash".equals(frompage)) { // Use .equals() for string comparison
+            // If payment is done, handle the back button as needed, e.g., go back to the previous activity
+            Intent intent = new Intent(ViewHistoryItem.this, Cart.class);
+            Bundle info = new Bundle();
+            info.putString("id", id);
+            info.putBoolean("clear", true);
+            intent.putExtras(info);
+            startActivity(intent);
+        } else if ("Online".equals(frompage)) { // Use .equals() for string comparison
+            // If payment is done, handle the back button as needed, e.g., go back to the previous activity
+            Intent intent = new Intent(ViewHistoryItem.this, HistoryPage.class);
+            Bundle info = new Bundle();
+            info.putString("id", id);
+            intent.putExtras(info);
+            startActivity(intent);
+        }
         super.onBackPressed();
     }
 }

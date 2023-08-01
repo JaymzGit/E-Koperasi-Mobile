@@ -103,6 +103,7 @@ public class Payment extends AppCompatActivity {
                                             Intent mainIntent = new Intent(Payment.this, ViewHistoryItem.class);
                                             Bundle info = new Bundle();
                                             info.putString("orderSnapshotKey", latestOrderId);
+                                            info.putBoolean("clear",true);
                                             mainIntent.putExtras(info);
                                             startActivity(mainIntent);
                                             finish();
@@ -132,6 +133,7 @@ public class Payment extends AppCompatActivity {
                                             Intent mainIntent = new Intent(Payment.this, Cart.class);
                                             Bundle info = new Bundle();
                                             info.putString("id", id);
+                                            info.putBoolean("clear",true);
                                             mainIntent.putExtras(info);
                                             startActivity(mainIntent);
                                             Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();
@@ -171,11 +173,9 @@ public class Payment extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-                                    // Handle the error if needed
+                                    Log.d("Database Error", String.valueOf(error));
                                 }
                             });
-                        } else {
-                            // Failed to update order status, handle the error if needed
                         }
                     }
                 });
@@ -197,8 +197,6 @@ public class Payment extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         // Item quantity updated successfully, show a toast or perform any other action
-                                    } else {
-                                        // Failed to update item quantity, handle the error if needed
                                     }
                                 }
                             });
@@ -207,7 +205,7 @@ public class Payment extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error if needed
+                Log.d("Database Error", String.valueOf(error));
             }
         });
     }
@@ -219,6 +217,8 @@ public class Payment extends AppCompatActivity {
             Intent intent = new Intent(Payment.this, ViewHistoryItem.class);
             Bundle info = new Bundle();
             info.putString("orderSnapshotKey", latestOrderId);
+            info.putBoolean("clear",true);
+            info.putString("frompage", "Online");
             intent.putExtras(info);
             startActivity(intent);
             super.onBackPressed();
@@ -228,9 +228,7 @@ public class Payment extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            //If successful
-                        } else {
-                            // Failed to delete order, handle the error if needed
+                            Log.d("Database Update", "Deleted cancelled order");
                         }
                     }
                 });
@@ -241,6 +239,7 @@ public class Payment extends AppCompatActivity {
             Intent mainIntent = new Intent(Payment.this, Cart.class);
             Bundle info = new Bundle();
             info.putString("id", id);
+            info.putBoolean("clear",true);
             mainIntent.putExtras(info);
             startActivity(mainIntent);
             Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();

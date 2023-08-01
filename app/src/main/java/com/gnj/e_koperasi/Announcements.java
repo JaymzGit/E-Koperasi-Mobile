@@ -34,8 +34,6 @@ public class Announcements extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             id = bundle.getString("id");
-        } else {
-            // Handle the case when the id is not passed to this activity.
         }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
