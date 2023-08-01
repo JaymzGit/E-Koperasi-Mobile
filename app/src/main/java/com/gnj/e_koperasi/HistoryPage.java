@@ -30,6 +30,7 @@ import java.util.Map;
 
 public class HistoryPage extends AppCompatActivity {
     String id;
+    boolean appearOnce = true;
     private RecyclerView recyclerViewHistory;
     private HistoryAdapter historyAdapter;
     private List<History> historyList;
@@ -60,6 +61,11 @@ public class HistoryPage extends AppCompatActivity {
                                 double price = orderSnapshot.child("total_price").getValue(double.class);
                                 String date = orderSnapshot.child("date").getValue(String.class);
                                 String time = orderSnapshot.child("time").getValue(String.class);
+                                String payment_method = orderSnapshot.child("payment_method").getValue(String.class);
+
+                                if ("Online Payment".equals(payment_method)) {
+                                    price = price + 1; //Add admin fee
+                                }
 
                                 StringBuilder purchase = new StringBuilder();
                                 DataSnapshot cartListSnapshot = orderSnapshot.child("cartList");
@@ -80,25 +86,40 @@ public class HistoryPage extends AppCompatActivity {
                                     }
                                 }
 
+                                // Count the number of items with quantities greater than 1
+                                int multipleItemsCount = 0;
+                                for (int itemQuantity : itemQuantities.values()) {
+                                    if (itemQuantity > 1) {
+                                        multipleItemsCount++;
+                                    }
+                                }
+
                                 // Append the item names and quantities to the purchase string
+                                boolean isFirstItem = true;
                                 for (Map.Entry<String, Integer> entry : itemQuantities.entrySet()) {
                                     String itemName = entry.getKey();
                                     int itemQuantity = entry.getValue();
+
+                                    if (multipleItemsCount > 1) {
+                                        isFirstItem = false;
+                                    }
 
                                     if (itemCount > 0) {
                                         purchase.append(", ");
                                     }
 
-                                    if (itemQuantity == 1) {
-                                        purchase.append(itemName);
-                                    } else {
+                                    // Only append the quantity if the item appears more than once in the entire cart list
+                                    if (itemQuantity > 1 && isFirstItem) {
                                         purchase.append(itemName + " x" + itemQuantity);
+                                    } else {
+                                        purchase.append(itemName);
                                     }
 
                                     itemCount++;
                                 }
 
                                 History history = new History(price, date, time, purchase.toString());
+                                history.setOrderSnapshotKey(orderSnapshot.getKey());
                                 historyList.add(history);
                             }
                         }
@@ -164,11 +185,6 @@ public class HistoryPage extends AppCompatActivity {
                         startActivity(Cart);
                         return true;
                     case R.id.setting:
-                        Intent Settings = new Intent(getApplicationContext(),Setting.class);
-                        Bundle setting = new Bundle();
-                        setting.putString("id",id);
-                        Settings.putExtras(setting);
-                        startActivity(Settings);
                         return true;
                 }
                 return false;

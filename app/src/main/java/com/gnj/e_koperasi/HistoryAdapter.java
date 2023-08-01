@@ -1,5 +1,6 @@
 package com.gnj.e_koperasi;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         public void bind(History history) {
             String purchaseText = history.getPurchase();
-            if (purchaseText.length() > 33) {
-                purchaseText = purchaseText.substring(0, 34) + "...";
+            if (purchaseText.length() > 30) {
+                purchaseText = purchaseText.substring(0, 31) + "...";
             }
             tvPurchase.setText(purchaseText);
             tvPrice.setText("-RM " + history.getPrice() + "0");
             tvDate.setText(history.getDate());
             tvPurchaseTime.setText(history.getTime());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle item click here
+                    // Open ViewHistoryItem activity and pass the selected history item's details
+                    Intent intent = new Intent(v.getContext(), ViewHistoryItem.class);
+                    intent.putExtra("price", history.getPrice());
+                    intent.putExtra("date", history.getDate());
+                    intent.putExtra("time", history.getTime());
+                    intent.putExtra("purchase", history.getPurchase());
+
+                    // Pass the order's snapshot data as an extra
+                    intent.putExtra("orderSnapshotKey", history.getOrderSnapshotKey());
+
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

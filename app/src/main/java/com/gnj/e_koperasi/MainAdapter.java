@@ -3,6 +3,7 @@ package com.gnj.e_koperasi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,17 @@ import java.util.ArrayList;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> implements Filterable {
     Context context;
     ArrayList<MainModal> itemlist;
-    ArrayList<MainModal> originalItemList; // Reference to the original list
+    private ArrayList<MainModal> originalItemList;
+    private ArrayList<MainModal> filteredItemList;
     String id;
 
     public MainAdapter(Context context, ArrayList<MainModal> itemlist, String id) {
         this.context = context;
         this.itemlist = itemlist;
-        this.originalItemList = new ArrayList<>(itemlist); // Make a copy of the original list
+        this.originalItemList = new ArrayList<>(itemlist);
         this.id = id;
+        this.filteredItemList = new ArrayList<>(itemlist); // Initialize filteredItemList
+        filter(""); // Call filter with an empty query to populate the filteredItemList initially
     }
 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,7 +42,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MainModal mainModal = itemlist.get(position);
+        MainModal mainModal = filteredItemList.get(position); // Use the filteredItemList
         Glide.with(holder.item_image.getContext())
                 .load(mainModal.getItem_image())
                 .placeholder(com.firebase.ui.database.R.drawable.common_google_signin_btn_icon_dark)
@@ -51,7 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return itemlist.size();
+        return filteredItemList != null ? filteredItemList.size() : 0;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -102,6 +106,30 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         return itemFilter;
     }
 
+    // Method to set the original list of items and update filtered list
+    public void setOriginalItemList(ArrayList<MainModal> itemList) {
+        this.originalItemList = itemList;
+        this.filteredItemList = new ArrayList<>(itemList); // Make a copy for filtering
+        notifyDataSetChanged();
+    }
+
+    // Filter method
+    public void filter(String query) {
+        filteredItemList.clear();
+        if (query.isEmpty()) {
+            filteredItemList.addAll(originalItemList);
+        } else {
+            query = query.toLowerCase().trim();
+            for (MainModal item : originalItemList) {
+                if (item.getItem_name().toLowerCase().contains(query)) {
+                    filteredItemList.add(item);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
     private Filter itemFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -123,9 +151,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            itemlist.clear();
-            itemlist.addAll((ArrayList<MainModal>) results.values);
-            notifyDataSetChanged();
+            filteredItemList.clear();
+            filteredItemList.addAll((ArrayList<MainModal>) results.values);
+            notifyDataSetChanged(); // Notify the adapter that the filtered data has changed
         }
     };
 }

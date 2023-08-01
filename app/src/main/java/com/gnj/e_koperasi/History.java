@@ -5,7 +5,7 @@ public class History {
     private String date;
     private String time;
     private String purchase;
-
+    private String orderSnapshotKey;
     public History() {
         // Default constructor required for calls to DataSnapshot.getValue(History.class)
     }
@@ -31,5 +31,13 @@ public class History {
 
     public String getPurchase() {
         return purchase;
+    }
+
+    public String getOrderSnapshotKey() {
+        return orderSnapshotKey;
+    }
+
+    public void setOrderSnapshotKey(String orderSnapshotKey) {
+        this.orderSnapshotKey = orderSnapshotKey;
     }
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
@@ -22,6 +23,7 @@ public class Payment extends AppCompatActivity {
     String id, latestOrderId;
     WebView webView;
     boolean isPaymentDone = false;
+    boolean isBackPressed = false;
     DatabaseReference databaseRef;
 
     @Override
@@ -74,18 +76,15 @@ public class Payment extends AppCompatActivity {
                         @Override
                         public void onReceiveValue(String value) {
                             String paymentStatus = value.replaceAll("\"", "").trim();
-                            Log.d("PaymentStatus", "Received status: " + paymentStatus);
-                            if (paymentStatus.equalsIgnoreCase("Payment Approved")) {
+                            Log.d("PaymentStatus", paymentStatus);
+                                if (paymentStatus.equalsIgnoreCase("Payment Approved")) {
+                                //if(paymentStatus.equalsIgnoreCase("Payment Unsuccessful")) { //used for testing
                                 // Handle the case when the payment is successful
                                 isPaymentDone = true;
                                 databaseRef.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                            String latestOrderId = dataSnapshot.getKey();
-                                            updateOrderStatusToCompleted(latestOrderId);
-                                            break;
-                                        }
+                                        // Your existing code to update the order status to "Completed" here
                                     }
 
                                     @Override
@@ -93,7 +92,21 @@ public class Payment extends AppCompatActivity {
                                         // Handle the error if needed
                                     }
                                 });
-                                Log.d("PaymentStatus", paymentStatus);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isBackPressed) {
+                                            // Perform redirection only if the back button was not pressed by the user
+                                            Intent mainIntent = new Intent(Payment.this, ViewHistoryItem.class);
+                                            Bundle info = new Bundle();
+                                            info.putString("orderSnapshotKey", latestOrderId);
+                                            mainIntent.putExtras(info);
+                                            startActivity(mainIntent);
+                                            finish();
+                                        }
+                                    }
+                                }, 10000);
                             } else {
                                 if (latestOrderId != null && !latestOrderId.isEmpty()) {
                                     databaseRef.child(latestOrderId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -108,7 +121,21 @@ public class Payment extends AppCompatActivity {
                                     });
                                 }
 
-                                Log.d("PaymentStatus", paymentStatus);
+                                // Perform redirection after a delay, regardless of payment status
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isBackPressed) {
+                                            // Perform redirection only if the back button was not pressed by the user
+                                            Intent mainIntent = new Intent(Payment.this, Cart.class);
+                                            Bundle info = new Bundle();
+                                            info.putString("id", id);
+                                            mainIntent.putExtras(info);
+                                            startActivity(mainIntent);
+                                            finish();
+                                        }
+                                    }
+                                }, 10000);
                             }
                         }
                     });
@@ -186,9 +213,9 @@ public class Payment extends AppCompatActivity {
     public void onBackPressed() {
         if (isPaymentDone) {
             // If payment is done, handle the back button as needed, e.g., go back to the previous activity
-            Intent intent = new Intent(Payment.this, Cart.class);
+            Intent intent = new Intent(Payment.this, ViewHistoryItem.class);
             Bundle info = new Bundle();
-            info.putString("id", id);
+            info.putString("orderSnapshotKey", latestOrderId);
             intent.putExtras(info);
             startActivity(intent);
             super.onBackPressed();
@@ -206,12 +233,14 @@ public class Payment extends AppCompatActivity {
                 });
             }
 
-            // Redirect the user to the Cart activity
-            Intent intent = new Intent(Payment.this, Cart.class);
+            isBackPressed = true;
+
+            Intent mainIntent = new Intent(Payment.this, Cart.class);
             Bundle info = new Bundle();
             info.putString("id", id);
-            intent.putExtras(info);
-            startActivity(intent);
+            mainIntent.putExtras(info);
+            startActivity(mainIntent);
+            finish();
         }
     }
 }

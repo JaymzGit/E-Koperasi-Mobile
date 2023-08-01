@@ -3,28 +3,29 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gnj.e_koperasi">
+
+    <uses-sdk
+        android:maxSdkVersion="32"
+        android:targetSdkVersion="28" />
     <!-- Enable instant app support -->
     <dist:module dist:instant="true" /> <!-- Declare features -->
     <supports-screens
+        android:anyDensity="true"
+        android:compatibleWidthLimitDp="600"
+        android:largeScreens="true"
+        android:largestWidthLimitDp="1024"
+        android:normalScreens="true"
+        android:requiresSmallestWidthDp="320"
         android:resizeable="true"
         android:smallScreens="false"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:anyDensity="true"
-        android:requiresSmallestWidthDp="320"
-        android:compatibleWidthLimitDp="600"
-        android:largestWidthLimitDp="1024"
-    />
+        android:xlargeScreens="true" />
+
     <uses-feature android:name="android.hardware.camera" /> <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-sdk
-        android:targetSdkVersion="28"
-        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +39,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup"
         tools:targetApi="31">
+        <activity
+            android:name=".ViewHistoryItem"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Payment"
             android:exported="false"
