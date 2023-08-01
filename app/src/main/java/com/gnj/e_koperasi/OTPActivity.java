@@ -33,10 +33,6 @@ public class OTPActivity extends AppCompatActivity {
     Button submit;
     String otp, phone;
 
-    private int otpResendCount = 0;
-    private Handler otpHandler = new Handler();
-    private static final long OTP_RESEND_DELAY_MS = 60000; // 60 seconds
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
