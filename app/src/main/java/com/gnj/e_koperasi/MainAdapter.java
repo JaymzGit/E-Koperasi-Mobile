@@ -2,8 +2,8 @@ package com.gnj.e_koperasi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +50,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
                 .into(holder.item_image);
         holder.item_name.setText(mainModal.getItem_name());
         holder.item_price.setText(String.valueOf(mainModal.getItem_price()) + "0");
-        holder.item_quantity.setText("Qty: " + String.valueOf(mainModal.getItem_quantity()));
+        int quantity = mainModal.getItem_quantity();
+        if (quantity == 0) {
+            holder.item_quantity.setText("Out of Stock");
+            holder.item_quantity.setTextColor(Color.GRAY); // Set the text color to grey for "Out of Stock" items
+            holder.itemView.setEnabled(false); // Disable click for "Out of Stock" items
+        } else {
+            holder.item_quantity.setText("Qty: " + String.valueOf(quantity));
+            holder.item_quantity.setTextColor(Color.WHITE); // Set the text color to black for other items
+            holder.itemView.setEnabled(true); // Enable click for other items
+        }
     }
 
     @Override
@@ -83,20 +92,25 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 MainModal mainModal = itemlist.get(position);
-                String itemName = mainModal.getItem_name();
-                double itemPrice = mainModal.getItem_price();
-                String itemImage = mainModal.getItem_image();
-                String itemQuantity = String.valueOf(mainModal.getItem_quantity());
+                int quantity = mainModal.getItem_quantity();
 
-                Intent i = new Intent(v.getContext(), ViewItem.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("itemName", itemName);
-                bundle.putDouble("itemPrice", itemPrice);
-                bundle.putString("itemImage", itemImage);
-                bundle.putString("itemQuantity", itemQuantity);
-                bundle.putString("id", id); // Use the id from the class member variable
-                i.putExtras(bundle);
-                v.getContext().startActivity(i);
+                // Check if the item is out of stock (quantity is 0)
+                if (quantity > 0) {
+                    String itemName = mainModal.getItem_name();
+                    double itemPrice = mainModal.getItem_price();
+                    String itemImage = mainModal.getItem_image();
+                    String itemQuantity = String.valueOf(quantity);
+
+                    Intent i = new Intent(v.getContext(), ViewItem.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("itemName", itemName);
+                    bundle.putDouble("itemPrice", itemPrice);
+                    bundle.putString("itemImage", itemImage);
+                    bundle.putString("itemQuantity", itemQuantity);
+                    bundle.putString("id", id); // Use the id from the class member variable
+                    i.putExtras(bundle);
+                    v.getContext().startActivity(i);
+                }
             }
         }
     }
