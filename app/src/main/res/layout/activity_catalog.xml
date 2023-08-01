@@ -56,6 +56,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.824"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.643">
+
+        <ImageButton
+            android:id="@+id/btnMisc"
+            android:layout_width="155dp"
+            android:layout_height="131dp"
+            android:background="@null"
+            android:backgroundTint="#D6D6D6"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/misc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:text="Misc"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.643">
+
+        <ImageButton
+            android:id="@+id/btnStationaries"
+            android:layout_width="155dp"
+            android:layout_height="131dp"
+            android:background="@null"
+            android:backgroundTint="#D6D6D6"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/stationaries" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:text="Stationaries"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,21 +133,20 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.282">
+        app:layout_constraintVertical_bias="0.319">
 
         <ImageButton
             android:id="@+id/btnFood"
             android:layout_width="155dp"
-            android:layout_height="152dp"
+            android:layout_height="117dp"
             android:background="@null"
             android:backgroundTint="#D6D6D6"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingBottom="40dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             app:srcCompat="@drawable/snacks" />
 
         <TextView
@@ -100,21 +168,20 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintHorizontal_bias="0.824"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.282">
+        app:layout_constraintVertical_bias="0.32">
 
         <ImageButton
             android:id="@+id/btnDrinks"
             android:layout_width="155dp"
-            android:layout_height="152dp"
+            android:layout_height="120dp"
             android:background="@null"
             android:backgroundTint="#D6D6D6"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingBottom="40dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             app:srcCompat="@drawable/drinks" />
 
         <TextView
@@ -127,79 +194,6 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666">
-
-        <ImageButton
-            android:id="@+id/btnStationaries"
-            android:layout_width="155dp"
-            android:layout_height="152dp"
-            android:background="@null"
-            android:backgroundTint="#D6D6D6"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="40dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/stationaries" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:text="Stationaries"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666">
-
-        <ImageButton
-            android:id="@+id/btnMisc"
-            android:layout_width="155dp"
-            android:layout_height="152dp"
-            android:background="@null"
-            android:backgroundTint="#D6D6D6"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="40dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/misc" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:text="Misc"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
