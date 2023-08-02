@@ -3,20 +3,22 @@ package com.gnj.e_koperasi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class MainModal2 implements Parcelable{
-    String item_image,item_name;
-    double item_price,totalPrice;
-    int quantity;
+public class MainModal2 implements Parcelable {
+    String item_image, item_name;
+    double item_price, totalPrice;
+    int quantity, maxQuantity, item_quantity, item_id; // Add item_quantity field
 
-    MainModal2(){
-
+    MainModal2() {
     }
+
     public MainModal2(String item_image, String item_name, double item_price, int quantity) {
         this.item_image = item_image;
         this.item_name = item_name;
         this.item_price = item_price;
         this.quantity = quantity;
     }
+
+    // Getters and Setters
 
     public String getItem_image() {
         return item_image;
@@ -49,6 +51,7 @@ public class MainModal2 implements Parcelable{
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -57,12 +60,39 @@ public class MainModal2 implements Parcelable{
         this.totalPrice = totalPrice;
     }
 
+    public int getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(int maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
+    public int getItem_quantity() {
+        return item_quantity;
+    }
+
+    public void setItem_quantity(int item_quantity) {
+        this.item_quantity = item_quantity;
+    }
+
+    public int getItem_id() {
+        return item_id;
+    }
+
+    public void setItem_id(int item_id) {
+        this.item_id = item_id;
+    }
+
     protected MainModal2(Parcel in) {
         item_image = in.readString();
         item_name = in.readString();
         item_price = in.readDouble();
         totalPrice = in.readDouble(); // Added read for totalPrice
         quantity = in.readInt();
+        maxQuantity = in.readInt(); // Added read for maxQuantity
+        item_quantity = in.readInt(); // Added read for item_quantity
+        item_id = in.readInt(); // Added read for item_id
     }
 
     @Override
@@ -72,6 +102,9 @@ public class MainModal2 implements Parcelable{
         dest.writeDouble(item_price);
         dest.writeDouble(totalPrice); // Added write for totalPrice
         dest.writeInt(quantity);
+        dest.writeInt(maxQuantity); // Added write for maxQuantity
+        dest.writeInt(item_quantity); // Added write for item_quantity
+        dest.writeInt(item_id); // Added write for item_id
     }
 
     @Override
@@ -90,5 +123,4 @@ public class MainModal2 implements Parcelable{
             return new MainModal2[size];
         }
     };
-
 }

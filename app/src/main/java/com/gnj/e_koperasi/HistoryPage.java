@@ -85,30 +85,17 @@ public class HistoryPage extends AppCompatActivity {
                                     }
                                 }
 
-                                // Count the number of items with quantities greater than 1
-                                int multipleItemsCount = 0;
-                                for (int itemQuantity : itemQuantities.values()) {
-                                    if (itemQuantity > 1) {
-                                        multipleItemsCount++;
-                                    }
-                                }
-
                                 // Append the item names and quantities to the purchase string
-                                boolean isFirstItem = true;
                                 for (Map.Entry<String, Integer> entry : itemQuantities.entrySet()) {
                                     String itemName = entry.getKey();
                                     int itemQuantity = entry.getValue();
-
-                                    if (multipleItemsCount > 1) {
-                                        isFirstItem = false;
-                                    }
 
                                     if (itemCount > 0) {
                                         purchase.append(", ");
                                     }
 
                                     // Only append the quantity if the item appears more than once in the entire cart list
-                                    if (itemQuantity > 1 && isFirstItem) {
+                                    if (itemQuantity > 1) {
                                         purchase.append(itemName + " x" + itemQuantity);
                                     } else {
                                         purchase.append(itemName);

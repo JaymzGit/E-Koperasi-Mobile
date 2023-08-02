@@ -68,9 +68,11 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         // Create a new ArrayList if orderList doesn't exist or is empty
         if (orderList == null || orderList.isEmpty()) {
             cartlist = new ArrayList<>();
+            orderItems = new ArrayList<>();
         } else {
             // Convert the orderList into MainModal2 items and add them to the cartlist
             cartlist = new ArrayList<>();
+            orderItems = new ArrayList<>();
             for (Bundle orderBundle : orderList) {
                 String itemName = orderBundle.getString("itemName");
                 double itemPrice = orderBundle.getDouble("itemPrice");
@@ -80,6 +82,9 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
 
                 MainModal2 item = new MainModal2(imageUrl, itemName, itemPrice, quantity);
                 cartlist.add(item);
+
+                OrderItem orderItem = new OrderItem(itemName, quantity, itemPrice);
+                orderItems.add(orderItem);
             }
         }
 
@@ -89,7 +94,7 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
             orderItems.add(orderItem);
         }
 
-        myAdapter = new MainAdapter2(this, cartlist);
+        myAdapter = new MainAdapter2(this, cartlist, null); // Set orderSnapshotKey to null initially
         myAdapter.setTotalCartPriceListener(this);
         dispCart.setAdapter(myAdapter);
 
@@ -142,7 +147,12 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(id.equals("GUEST")) {
+                orderItems = new ArrayList<>();
+                for (MainModal2 item : cartlist) {
+                    OrderItem orderItem = new OrderItem(item.getItem_name(), item.getQuantity(), item.getItem_price());
+                    orderItems.add(orderItem);
+                }
+                if (id.equals("GUEST")) {
                     String key = databaseRef.push().getKey();
                     latestOrderId = key;
                     String status = "Pending";
@@ -171,7 +181,7 @@ public class Cart extends AppCompatActivity implements MainAdapter2.TotalCartPri
                     mainIntent.putExtras(info);
                     startActivity(mainIntent);
                     finish();
-                }else {
+                } else {
                     showPaymentDialog();
                 }
             }
