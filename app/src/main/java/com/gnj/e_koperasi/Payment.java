@@ -77,14 +77,14 @@ public class Payment extends AppCompatActivity {
                         public void onReceiveValue(String value) {
                             String paymentStatus = value.replaceAll("\"", "").trim();
                             Log.d("PaymentStatus", paymentStatus);
-                                if (paymentStatus.equalsIgnoreCase("Payment Approved")) {
+                            if (paymentStatus.equalsIgnoreCase("Payment Approved")) {
                                 //if(paymentStatus.equalsIgnoreCase("Payment Unsuccessful")) { //used for testing
                                 // Handle the case when the payment is successful
                                 isPaymentDone = true;
                                 databaseRef.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        // Your existing code to update the order status to "Completed" here
+                                        updateOrderStatusToCompleted(latestOrderId);
                                     }
 
                                     @Override
@@ -92,8 +92,6 @@ public class Payment extends AppCompatActivity {
                                         // Handle the error if needed
                                     }
                                 });
-
-                                updateOrderStatusToCompleted(latestOrderId);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -136,7 +134,6 @@ public class Payment extends AppCompatActivity {
                                             info.putBoolean("clear",true);
                                             mainIntent.putExtras(info);
                                             startActivity(mainIntent);
-                                            Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();
                                             finish();
                                         }
                                     }
@@ -148,7 +145,7 @@ public class Payment extends AppCompatActivity {
             }
         });
 
-        String websiteUrl = "http://ekoop.000webhostapp.com/check.php?id=" + id;
+        String websiteUrl = "http://ekooperasi.000webhostapp.com/check.php?id=" + id;
         webView.loadUrl(websiteUrl);
     }
 
@@ -242,7 +239,6 @@ public class Payment extends AppCompatActivity {
             info.putBoolean("clear",true);
             mainIntent.putExtras(info);
             startActivity(mainIntent);
-            Toast.makeText(getApplicationContext(), "Payment Unsuccessful", Toast.LENGTH_LONG).show();
             finish();
         }
     }
